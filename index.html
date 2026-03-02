@@ -3,304 +3,771 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Financeiro Sergio - Controle Financeiro Inteligente</title>
-
+<title>Financeiro Sergio Pro - Sistema Profissional de Gestão Financeira</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+:root {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --secondary: #7c3aed;
+    --success: #059669;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --info: #0284c7;
+    --light: #f8fafc;
+    --dark: #0f172a;
+    --border: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
+    color: var(--dark);
+    line-height: 1.6;
 }
 
-.container { max-width: 1200px; margin: 0 auto; }
+.container { max-width: 1400px; margin: 0 auto; }
 
-/* HEADER */
+/* ========================================
+   HEADER PROFISSIONAL
+   ======================================== */
 .header {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
     color: white;
-    padding: 30px;
-    border-radius: 15px;
+    padding: 40px;
+    border-radius: 20px;
     margin-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    text-align: center;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
 }
-.header h1 { font-size: 36px; margin-bottom: 10px; font-weight: 700; }
-.header p  { font-size: 16px; opacity: 0.9; }
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.header-content { position: relative; z-index: 1; }
+.header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+.header h1 i { margin-right: 12px; color: #fbbf24; }
+.header p {
+    font-size: 18px;
+    opacity: 0.95;
+    font-weight: 500;
+}
+.header .version {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
 
-/* RESUMO */
+/* ========================================
+   CARDS DE RESUMO
+   ======================================== */
 .resumo-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
     margin-bottom: 30px;
 }
 .resumo-card {
     background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: transform .3s, box-shadow .3s;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: all .3s ease;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
 }
-.resumo-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-.resumo-card h3 { font-size: 14px; color: #666; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-.resumo-card .valor { font-size: 32px; font-weight: bold; margin-bottom: 5px; }
-.receita-card .valor { color: #10b981; }
-.despesa-card .valor { color: #ef4444; }
-.saldo-card .valor   { color: #3b82f6; }
-.resumo-card .icon   { font-size: 40px; margin-bottom: 10px; }
+.resumo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--card-color), transparent);
+}
+.resumo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+.resumo-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.resumo-card h3 {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.resumo-card .icon {
+    font-size: 32px;
+    opacity: 0.15;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.resumo-card .valor {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+.resumo-card .variacao {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: inline-block;
+}
+.receita-card { --card-color: #10b981; }
+.receita-card .valor { color: #059669; }
+.receita-card .icon { color: #10b981; }
+.despesa-card { --card-color: #ef4444; }
+.despesa-card .valor { color: #dc2626; }
+.despesa-card .icon { color: #ef4444; }
+.saldo-card { --card-color: #3b82f6; }
+.saldo-card .valor { color: #1e40af; }
+.saldo-card .icon { color: #3b82f6; }
 
-/* MAIN CONTENT */
+/* ========================================
+   MAIN CONTENT
+   ======================================== */
 .main-content {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 400px 1fr;
     gap: 30px;
     margin-bottom: 30px;
 }
 
-/* FORM */
+/* ========================================
+   FORMULÁRIO PROFISSIONAL
+   ======================================== */
 .form-card {
     background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
     height: fit-content;
     position: sticky;
     top: 20px;
+    border: 1px solid var(--border);
 }
 .form-card h2 {
-    font-size: 22px; margin-bottom: 20px;
-    color: #1e3c72;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 24px;
+    color: var(--dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
-.form-group { margin-bottom: 15px; }
+.form-card h2 i {
+    color: var(--primary);
+    font-size: 22px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
 .form-group label {
-    display: block; font-size: 13px; font-weight: 600;
-    color: #333; margin-bottom: 6px;
-    text-transform: uppercase; letter-spacing: .5px;
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.form-group label i {
+    margin-right: 6px;
+    color: var(--primary);
 }
 .form-group input,
 .form-group select {
-    width: 100%; padding: 12px; font-size: 14px;
-    border-radius: 8px; border: 2px solid #e5e7eb;
-    transition: border-color .3s; font-family: inherit;
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    transition: all .3s;
+    font-family: inherit;
+    background: white;
 }
 .form-group input:focus,
 .form-group select:focus {
-    outline: none; border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102,126,234,.1);
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
 }
-.botoes-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.form-group input[type="number"]::-webkit-inner-spin-button,
+.form-group input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+.botoes-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 24px;
+}
 
-/* BOTÕES */
+/* ========================================
+   BOTÕES PROFISSIONAIS
+   ======================================== */
 .btn {
-    padding: 12px; border: none; border-radius: 8px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-    transition: all .3s; text-transform: uppercase; letter-spacing: .5px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
 }
-.btn-salvar { background: linear-gradient(135deg,#10b981,#059669); color: white; grid-column: 1/-1; }
-.btn-salvar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16,185,129,.4); }
-.btn-limpar { background: #f3f4f6; color: #666; }
-.btn-limpar:hover { background: #e5e7eb; }
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width .6s, height .6s;
+}
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+.btn i { position: relative; z-index: 1; }
+.btn span { position: relative; z-index: 1; }
+.btn-salvar {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+}
+.btn-salvar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3);
+}
+.btn-limpar {
+    background: var(--light);
+    color: #64748b;
+    border: 2px solid var(--border);
+}
+.btn-limpar:hover {
+    background: #e2e8f0;
+}
+.btn-relatorio {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+.btn-relatorio:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+.btn-exportar-todos {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: white;
+    padding: 16px 32px;
+}
+.btn-exportar-todos:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3);
+}
+.btn-backup {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: white;
+    width: 100%;
+}
+.btn-backup:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3);
+}
+.btn-restaurar {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    color: white;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.btn-restaurar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+}
 
-/* FILTROS CARD */
+/* ========================================
+   LISTA DE LANÇAMENTOS
+   ======================================== */
+.lista-card {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+.lista-card h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+    color: var(--dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.lista-card h2 i {
+    color: var(--primary);
+    font-size: 22px;
+}
+.busca-container {
+    margin-bottom: 20px;
+    position: relative;
+}
+.busca-container input {
+    width: 100%;
+    padding: 14px 48px 14px 16px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    transition: all .3s;
+}
+.busca-container input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
+}
+.busca-container i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 18px;
+}
+.item {
+    background: var(--light);
+    padding: 20px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+    transition: all .3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn .3s ease;
+    border: 1px solid var(--border);
+}
+.item:hover {
+    background: white;
+    transform: translateX(5px);
+    box-shadow: var(--shadow);
+}
+.item-info { flex: 1; }
+.item-tipo {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+.item-receita {
+    background: #d1fae5;
+    color: #065f46;
+}
+.item-despesa {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.item-descricao {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 6px;
+}
+.item-meta {
+    font-size: 13px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.item-meta i {
+    color: #cbd5e1;
+}
+.item-valor {
+    font-size: 22px;
+    font-weight: 800;
+    margin-right: 20px;
+    min-width: 140px;
+    text-align: right;
+}
+.item-valor.receita { color: #059669; }
+.item-valor.despesa { color: #dc2626; }
+.item-botoes {
+    display: flex;
+    gap: 8px;
+}
+.btn-pequeno {
+    padding: 10px 16px;
+    font-size: 13px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .3s;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-editar {
+    background: #fef3c7;
+    color: #92400e;
+}
+.btn-editar:hover {
+    background: #fbbf24;
+    color: white;
+    transform: scale(1.05);
+}
+.btn-excluir {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.btn-excluir:hover {
+    background: #dc2626;
+    color: white;
+    transform: scale(1.05);
+}
+.lista-vazia {
+    text-align: center;
+    padding: 60px;
+    color: #94a3b8;
+}
+.lista-vazia-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+}
+.lista-vazia p {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* ========================================
+   FILTROS / RELATÓRIOS
+   ======================================== */
 .filtros-card {
-    background: white; padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
     margin-bottom: 30px;
+    border: 1px solid var(--border);
 }
 .filtros-card h2 {
-    font-size: 22px; margin-bottom: 20px;
-    color: #1e3c72;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 24px;
+    color: var(--dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.filtros-card h2 i {
+    color: var(--primary);
+    font-size: 22px;
 }
 .filtros-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px; margin-bottom: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
 }
-.btn-relatorio { background: linear-gradient(135deg,#3b82f6,#1e40af); color: white; grid-column: 1/-1; }
-.btn-relatorio:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59,130,246,.4); }
 
-/* LISTA */
-.lista-card {
-    background: white; padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-.lista-card h2 {
-    font-size: 22px; margin-bottom: 20px;
-    color: #1e3c72;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 10px;
-}
-.item {
-    background: #f9fafb; padding: 15px; margin-bottom: 12px;
-    border-radius: 10px; border-left: 4px solid #667eea;
-    transition: all .3s; display: flex;
-    justify-content: space-between; align-items: center;
-    animation: slideIn .3s ease;
-}
-.item:hover { background: #f3f4f6; transform: translateX(5px); }
-.item-info { flex: 1; }
-.item-tipo { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
-.item-receita { color: #10b981; }
-.item-despesa { color: #ef4444; }
-.item-descricao { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 5px; }
-.item-meta { font-size: 13px; color: #9ca3af; }
-.item-valor { font-size: 18px; font-weight: 700; margin-right: 15px; min-width: 100px; text-align: right; }
-.item-valor.receita { color: #10b981; }
-.item-valor.despesa { color: #ef4444; }
-.item-botoes { display: flex; gap: 8px; }
-.btn-pequeno { padding: 8px 12px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; transition: all .3s; font-weight: 600; }
-.btn-editar  { background: #fbbf24; color: white; }
-.btn-editar:hover  { background: #f59e0b; transform: scale(1.05); }
-.btn-excluir { background: #ef4444; color: white; }
-.btn-excluir:hover { background: #dc2626; transform: scale(1.05); }
-.lista-vazia { text-align: center; padding: 40px; color: #9ca3af; }
-.lista-vazia-icon { font-size: 48px; margin-bottom: 15px; }
-
-/* ================================ */
-/* EXPORTAR TODOS OS LANÇAMENTOS    */
-/* ================================ */
+/* ========================================
+   EXPORTAR CARD
+   ======================================== */
 .exportar-card {
     background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
     margin-bottom: 30px;
-    border-top: 5px solid #ef4444;
+    border-left: 6px solid #dc2626;
+    border: 1px solid var(--border);
 }
 .exportar-card h2 {
-    font-size: 22px; margin-bottom: 8px;
-    color: #1e3c72;
-    border-bottom: 3px solid #ef4444;
-    padding-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.exportar-card h2 i {
+    color: #dc2626;
+    font-size: 22px;
 }
 .exportar-card .exportar-subtitulo {
-    font-size: 13px; color: #888; margin-bottom: 20px;
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 24px;
+    line-height: 1.6;
 }
 .exportar-inner {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
     flex-wrap: wrap;
 }
 .exportar-info-box {
-    display: flex; gap: 16px; flex-wrap: wrap; flex: 1;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    flex: 1;
 }
 .exportar-stat {
-    background: #f9fafb;
-    border-radius: 10px;
-    padding: 14px 20px;
+    background: var(--light);
+    border-radius: 12px;
+    padding: 16px 24px;
     text-align: center;
-    min-width: 120px;
-    border: 2px solid #e5e7eb;
+    min-width: 140px;
+    border: 2px solid var(--border);
+    transition: all .3s;
 }
-.exportar-stat .est-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
-.exportar-stat .est-val   { font-size: 20px; font-weight: 800; }
-.exportar-stat.ec-total   .est-val { color: #1e3c72; }
-.exportar-stat.ec-receita .est-val { color: #10b981; }
-.exportar-stat.ec-despesa .est-val { color: #ef4444; }
-.exportar-stat.ec-saldo   .est-val { color: #3b82f6; }
+.exportar-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+.exportar-stat .est-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.exportar-stat .est-val {
+    font-size: 22px;
+    font-weight: 800;
+}
+.exportar-stat.ec-total .est-val { color: #1e40af; }
+.exportar-stat.ec-receita .est-val { color: #059669; }
+.exportar-stat.ec-despesa .est-val { color: #dc2626; }
+.exportar-stat.ec-saldo .est-val { color: #0284c7; }
 
-.btn-exportar-todos {
-    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-    color: white;
-    padding: 16px 28px;
-    font-size: 15px;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-.btn-exportar-todos:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(239,68,68,.45);
-}
-
-/* ========================== */
-/* BACKUP CARD                */
-/* ========================== */
+/* ========================================
+   BACKUP CARD
+   ======================================== */
 .backup-card {
-    background: white; padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
     margin-bottom: 30px;
+    border: 1px solid var(--border);
 }
 .backup-card h2 {
-    font-size: 22px; margin-bottom: 8px;
-    color: #1e3c72;
-    border-bottom: 3px solid #f59e0b;
-    padding-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
-.backup-card .backup-subtitulo { font-size: 13px; color: #888; margin-bottom: 20px; }
-.backup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.backup-card h2 i {
+    color: #d97706;
+    font-size: 22px;
+}
+.backup-card .backup-subtitulo {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+.backup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
 .backup-bloco {
-    background: #f9fafb; border-radius: 12px;
-    padding: 22px; border: 2px dashed #e5e7eb;
-    text-align: center; transition: border-color .3s;
+    background: var(--light);
+    border-radius: 16px;
+    padding: 28px;
+    border: 2px dashed var(--border);
+    text-align: center;
+    transition: all .3s;
 }
-.backup-bloco:hover { border-color: #667eea; }
-.backup-bloco .backup-icon { font-size: 40px; margin-bottom: 10px; }
-.backup-bloco h3 { font-size: 16px; font-weight: 700; color: #1e3c72; margin-bottom: 6px; }
-.backup-bloco p  { font-size: 13px; color: #888; margin-bottom: 16px; line-height: 1.5; }
-.btn-backup    { background: linear-gradient(135deg,#f59e0b,#d97706); color: white; width: 100%; }
-.btn-backup:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(245,158,11,.4); }
-.btn-restaurar { background: linear-gradient(135deg,#8b5cf6,#6d28d9); color: white; width: 100%; margin-bottom: 10px; }
-.btn-restaurar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139,92,246,.4); }
+.backup-bloco:hover {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: var(--shadow);
+}
+.backup-bloco .backup-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: var(--primary);
+    opacity: 0.7;
+}
+.backup-bloco h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+.backup-bloco p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
 .file-input-label {
-    display: flex; align-items: center; justify-content: center;
-    gap: 8px; background: #f3f4f6; border: 2px solid #e5e7eb;
-    border-radius: 8px; padding: 10px 14px; font-size: 13px;
-    font-weight: 600; color: #555; cursor: pointer;
-    transition: all .3s; margin-bottom: 10px; width: 100%; box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--light);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569;
+    cursor: pointer;
+    transition: all .3s;
+    margin-bottom: 12px;
+    width: 100%;
 }
-.file-input-label:hover { background: #e5e7eb; border-color: #8b5cf6; color: #6d28d9; }
+.file-input-label:hover {
+    background: white;
+    border-color: var(--primary);
+    color: var(--primary);
+}
 #arquivoBackup { display: none; }
 #nomeArquivoSelecionado {
-    font-size: 12px; color: #8b5cf6; margin-bottom: 10px;
-    font-style: italic; min-height: 18px; display: block; text-align: center;
+    font-size: 13px;
+    color: #7c3aed;
+    margin-bottom: 12px;
+    font-weight: 600;
+    min-height: 20px;
+    display: block;
+    text-align: center;
 }
 
-/* TOAST */
+/* ========================================
+   TOAST
+   ======================================== */
 #toast {
-    position: fixed; bottom: 30px; left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: #1e3c72; color: white;
-    padding: 14px 28px; border-radius: 50px;
-    font-size: 15px; font-weight: 600;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--dark);
+    color: white;
+    padding: 16px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
     z-index: 9999;
+    transform: translateX(400px);
     transition: transform .4s cubic-bezier(.34,1.56,.64,1);
-    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 4px solid white;
 }
-#toast.show { transform: translateX(-50%) translateY(0); }
+#toast.show {
+    transform: translateX(0);
+}
+#toast i {
+    font-size: 20px;
+}
 
-/* RESPONSIVO */
-@media (max-width: 1024px) {
-    .main-content { grid-template-columns: 1fr; }
-    .form-card { position: static; }
+/* ========================================
+   ANIMAÇÕES
+   ======================================== */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   RESPONSIVO
+   ======================================== */
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    .form-card {
+        position: static;
+    }
 }
 @media (max-width: 768px) {
-    .header h1 { font-size: 28px; }
+    .header h1 { font-size: 32px; }
+    .header .version { display: none; }
     .resumo-container { grid-template-columns: 1fr; }
-    .botoes-form { grid-template-columns: 1fr; }
     .backup-grid { grid-template-columns: 1fr; }
-    .item { flex-direction: column; align-items: flex-start; }
-    .item-valor { margin-right: 0; margin-top: 10px; width: 100%; text-align: left; }
-    .item-botoes { width: 100%; margin-top: 10px; }
+    .item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .item-valor {
+        margin-right: 0;
+        margin-top: 12px;
+        width: 100%;
+        text-align: left;
+    }
+    .item-botoes {
+        width: 100%;
+        margin-top: 12px;
+    }
     .btn-pequeno { flex: 1; }
     .exportar-inner { flex-direction: column; }
     .btn-exportar-todos { width: 100%; }
-}
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -309,26 +776,35 @@ body {
 
     <!-- HEADER -->
     <div class="header">
-        <h1>💰 Financeiro Sergio</h1>
-        <p>Controle Financeiro Inteligente e Completo</p>
+        <div class="version">v2.0 Pro</div>
+        <div class="header-content">
+            <h1><i class="fas fa-chart-line"></i>Financeiro Sergio Pro</h1>
+            <p>Sistema Profissional de Gestão Financeira Empresarial</p>
+        </div>
     </div>
 
     <!-- RESUMO -->
     <div class="resumo-container">
         <div class="resumo-card receita-card">
-            <div class="icon">📈</div>
-            <h3>Total de Receitas</h3>
-            <div class="valor">R$ <span id="totalReceita">0.00</span></div>
+            <i class="fas fa-arrow-trend-up icon"></i>
+            <div class="card-header">
+                <h3>Total de Receitas</h3>
+            </div>
+            <div class="valor">R$ <span id="totalReceita">0,00</span></div>
         </div>
         <div class="resumo-card despesa-card">
-            <div class="icon">📉</div>
-            <h3>Total de Despesas</h3>
-            <div class="valor">R$ <span id="totalDespesa">0.00</span></div>
+            <i class="fas fa-arrow-trend-down icon"></i>
+            <div class="card-header">
+                <h3>Total de Despesas</h3>
+            </div>
+            <div class="valor">R$ <span id="totalDespesa">0,00</span></div>
         </div>
         <div class="resumo-card saldo-card">
-            <div class="icon">💳</div>
-            <h3>Saldo Total</h3>
-            <div class="valor">R$ <span id="saldo">0.00</span></div>
+            <i class="fas fa-wallet icon"></i>
+            <div class="card-header">
+                <h3>Saldo Total</h3>
+            </div>
+            <div class="valor">R$ <span id="saldo">0,00</span></div>
         </div>
     </div>
 
@@ -336,95 +812,111 @@ body {
     <div class="main-content">
         <!-- FORMULÁRIO -->
         <div class="form-card">
-            <h2>➕ Novo Lançamento</h2>
+            <h2><i class="fas fa-plus-circle"></i>Novo Lançamento</h2>
+
             <div class="form-group">
-                <label>Data</label>
+                <label><i class="far fa-calendar"></i>Data</label>
                 <input type="date" id="data">
             </div>
+
             <div class="form-group">
-                <label>Tipo</label>
+                <label><i class="fas fa-tag"></i>Tipo</label>
                 <select id="tipo">
-                    <option value="">Selecione...</option>
+                    <option value="">Selecione o tipo...</option>
                     <option value="Receita">📈 Receita</option>
                     <option value="Despesa">📉 Despesa</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label>Descrição</label>
-                <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel...">
+                <label><i class="fas fa-file-alt"></i>Descrição</label>
+                <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel, Investimento...">
             </div>
+
             <div class="form-group">
-                <label>Valor</label>
-                <input type="number" id="valor" placeholder="0.00" step="0.01">
+                <label><i class="fas fa-dollar-sign"></i>Valor</label>
+                <input type="number" id="valor" placeholder="0,00" step="0.01">
             </div>
+
             <div class="form-group">
-                <label>Conta</label>
+                <label><i class="fas fa-university"></i>Conta</label>
                 <select id="conta">
-                    <option value="">Selecione...</option>
+                    <option value="">Selecione a conta...</option>
                     <option value="Dinheiro">💵 Dinheiro</option>
                     <option value="Caixa Econômica">🏦 Caixa Econômica</option>
                     <option value="Bradesco">🏦 Bradesco</option>
-                    <option value="XP">📊 XP</option>
+                    <option value="XP">📊 XP Investimentos</option>
                 </select>
             </div>
+
             <div class="botoes-form">
-                <button class="btn btn-salvar" onclick="salvar()">Salvar Lançamento</button>
-                <button class="btn btn-limpar" onclick="limparForm()">Limpar</button>
+                <button class="btn btn-salvar" onclick="salvar()">
+                    <i class="fas fa-save"></i><span>Salvar Lançamento</span>
+                </button>
+                <button class="btn btn-limpar" onclick="limparForm()">
+                    <i class="fas fa-eraser"></i><span>Limpar Formulário</span>
+                </button>
             </div>
         </div>
 
         <!-- LISTA -->
         <div class="lista-card">
-            <h2>📋 Últimos Lançamentos</h2>
+            <h2><i class="fas fa-list"></i>Lançamentos Recentes</h2>
+
+            <div class="busca-container">
+                <input type="text" id="busca" placeholder="Buscar por descrição, conta ou valor..." onkeyup="buscar()">
+                <i class="fas fa-search"></i>
+            </div>
+
             <div id="lista"></div>
         </div>
     </div>
 
     <!-- FILTROS / EXTRATO PDF -->
     <div class="filtros-card">
-        <h2>📊 Gerar Extrato Bancário (por período)</h2>
+        <h2><i class="fas fa-file-invoice"></i>Gerar Extrato Bancário Profissional</h2>
         <div class="filtros-grid">
             <div class="form-group">
-                <label>Data Inicial</label>
+                <label><i class="far fa-calendar"></i>Data Inicial</label>
                 <input type="date" id="dataInicio">
             </div>
             <div class="form-group">
-                <label>Data Final</label>
+                <label><i class="far fa-calendar"></i>Data Final</label>
                 <input type="date" id="dataFim">
             </div>
             <div class="form-group">
-                <label>Conta</label>
+                <label><i class="fas fa-university"></i>Conta</label>
                 <select id="contaRelatorio">
                     <option value="Todas">Todas as Contas</option>
                     <option value="Dinheiro">💵 Dinheiro</option>
                     <option value="Caixa Econômica">🏦 Caixa Econômica</option>
                     <option value="Bradesco">🏦 Bradesco</option>
-                    <option value="XP">📊 XP</option>
+                    <option value="XP">📊 XP Investimentos</option>
                 </select>
             </div>
         </div>
-        <button class="btn btn-relatorio" onclick="relatorioPDF()">📄 Gerar PDF do Período</button>
+        <button class="btn btn-relatorio" onclick="relatorioPDF()">
+            <i class="fas fa-file-pdf"></i><span>Gerar Extrato Bancário PDF</span>
+        </button>
     </div>
 
-    <!-- ================================= -->
-    <!-- EXPORTAR TODOS OS LANÇAMENTOS PDF -->
-    <!-- ================================= -->
+    <!-- EXPORTAR TODOS -->
     <div class="exportar-card">
-        <h2>📑 Exportar Todos os Lançamentos para PDF</h2>
-        <p class="exportar-subtitulo">Gera um PDF completo e profissional com <strong>todos</strong> os lançamentos cadastrados, resumo financeiro por conta e totais gerais — sem precisar selecionar período.</p>
+        <h2><i class="fas fa-file-export"></i>Exportar Relatório Completo</h2>
+        <p class="exportar-subtitulo">Gera um PDF profissional com <strong>todos</strong> os lançamentos cadastrados, análise por conta, demonstrativos contábeis e indicadores financeiros.</p>
 
         <div class="exportar-inner">
             <div class="exportar-info-box">
                 <div class="exportar-stat ec-total">
-                    <div class="est-label">Lançamentos</div>
+                    <div class="est-label">Total Lançamentos</div>
                     <div class="est-val" id="expTotal">0</div>
                 </div>
                 <div class="exportar-stat ec-receita">
-                    <div class="est-label">Total Receitas</div>
+                    <div class="est-label">Receitas</div>
                     <div class="est-val" id="expReceita">R$ 0,00</div>
                 </div>
                 <div class="exportar-stat ec-despesa">
-                    <div class="est-label">Total Despesas</div>
+                    <div class="est-label">Despesas</div>
                     <div class="est-val" id="expDespesa">R$ 0,00</div>
                 </div>
                 <div class="exportar-stat ec-saldo">
@@ -433,30 +925,36 @@ body {
                 </div>
             </div>
             <button class="btn btn-exportar-todos" onclick="exportarTodosPDF()">
-                🖨️ Exportar PDF Completo
+                <i class="fas fa-download"></i><span>Exportar PDF Completo</span>
             </button>
         </div>
     </div>
 
     <!-- BACKUP & RESTAURAÇÃO -->
     <div class="backup-card">
-        <h2>🗄️ Backup & Restauração</h2>
-        <p class="backup-subtitulo">Salve seus dados em arquivo JSON ou restaure um backup anterior com segurança.</p>
+        <h2><i class="fas fa-database"></i>Backup & Restauração de Dados</h2>
+        <p class="backup-subtitulo">Proteja seus dados financeiros com backup automático em formato JSON. Restaure facilmente quando necessário.</p>
         <div class="backup-grid">
             <div class="backup-bloco">
-                <div class="backup-icon">💾</div>
+                <i class="fas fa-cloud-download-alt backup-icon"></i>
                 <h3>Fazer Backup</h3>
-                <p>Exporta todos os seus lançamentos para um arquivo <strong>.json</strong> no seu dispositivo.</p>
-                <button class="btn btn-backup" onclick="fazerBackup()">⬇️ Baixar Backup</button>
+                <p>Exporta todos os seus lançamentos para um arquivo <strong>.json</strong> seguro no seu dispositivo.</p>
+                <button class="btn btn-backup" onclick="fazerBackup()">
+                    <i class="fas fa-download"></i><span>Baixar Backup</span>
+                </button>
             </div>
             <div class="backup-bloco">
-                <div class="backup-icon">📂</div>
+                <i class="fas fa-cloud-upload-alt backup-icon"></i>
                 <h3>Carregar Backup</h3>
-                <p>Importa um arquivo de backup <strong>.json</strong> e restaura seus lançamentos anteriores.</p>
-                <label class="file-input-label" for="arquivoBackup">📎 Escolher Arquivo .json</label>
+                <p>Importa um arquivo de backup <strong>.json</strong> e restaura seus dados anteriores com segurança.</p>
+                <label class="file-input-label" for="arquivoBackup">
+                    <i class="fas fa-file-upload"></i><span>Escolher Arquivo .json</span>
+                </label>
                 <input type="file" id="arquivoBackup" accept=".json" onchange="previewArquivo(event)">
-                <span id="nomeArquivoSelecionado">Nenhum arquivo selecionado</span>
-                <button class="btn btn-restaurar" onclick="carregarBackup()">⬆️ Restaurar Backup</button>
+                <span id="nomeArquivoSelecionado"></span>
+                <button class="btn btn-restaurar" onclick="carregarBackup()">
+                    <i class="fas fa-upload"></i><span>Restaurar Backup</span>
+                </button>
             </div>
         </div>
     </div>
@@ -471,189 +969,707 @@ body {
 /* ============================================================
    ELEMENTOS
    ============================================================ */
-const lista           = document.getElementById("lista");
-const saldoEl         = document.getElementById("saldo");
-const totalReceitaEl  = document.getElementById("totalReceita");
-const totalDespesaEl  = document.getElementById("totalDespesa");
-const dataEl          = document.getElementById("data");
-const tipoEl          = document.getElementById("tipo");
-const descricaoEl     = document.getElementById("descricao");
-const valorEl         = document.getElementById("valor");
-const contaEl         = document.getElementById("conta");
-const dataInicio      = document.getElementById("dataInicio");
-const dataFim         = document.getElementById("dataFim");
-const contaRelatorio  = document.getElementById("contaRelatorio");
+const lista = document.getElementById("lista");
+const saldoEl = document.getElementById("saldo");
+const totalReceitaEl = document.getElementById("totalReceita");
+const totalDespesaEl = document.getElementById("totalDespesa");
+const dataEl = document.getElementById("data");
+const tipoEl = document.getElementById("tipo");
+const descricaoEl = document.getElementById("descricao");
+const valorEl = document.getElementById("valor");
+const contaEl = document.getElementById("conta");
+const dataInicio = document.getElementById("dataInicio");
+const dataFim = document.getElementById("dataFim");
+const contaRelatorio = document.getElementById("contaRelatorio");
+const buscaEl = document.getElementById("busca");
 
 /* ============================================================
    DADOS
    ============================================================ */
 let dados = JSON.parse(localStorage.getItem("financeiro_sergio")) || [];
+let dadosFiltrados = [...dados];
 dataEl.value = new Date().toISOString().split("T")[0];
+
+/* ============================================================
+   FORMATAÇÃO
+   ============================================================ */
+function formatarMoeda(valor) {
+    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 /* ============================================================
    TOAST
    ============================================================ */
-function mostrarToast(msg, cor) {
+function mostrarToast(msg, icone, cor) {
     const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.style.background = cor || "#1e3c72";
+    t.innerHTML = `<i class="fas ${icone}"></i><span>${msg}</span>`;
+    t.style.background = cor || "#0f172a";
+    t.style.borderLeftColor = cor || "#0f172a";
     t.classList.add("show");
-    setTimeout(() => t.classList.remove("show"), 3200);
+    setTimeout(() => t.classList.remove("show"), 3500);
+}
+
+/* ============================================================
+   VALIDAÇÕES
+   ============================================================ */
+function validarFormulario() {
+    const data = dataEl.value;
+    const tipo = tipoEl.value;
+    const descricao = descricaoEl.value.trim();
+    const valor = parseFloat(valorEl.value);
+    const conta = contaEl.value;
+
+    if (!data) {
+        mostrarToast("Por favor, selecione uma data!", "fa-calendar-xmark", "#dc2626");
+        dataEl.focus();
+        return false;
+    }
+    if (!tipo) {
+        mostrarToast("Por favor, selecione o tipo de lançamento!", "fa-exclamation-triangle", "#d97706");
+        tipoEl.focus();
+        return false;
+    }
+    if (!descricao) {
+        mostrarToast("Por favor, informe uma descrição!", "fa-file-circle-exclamation", "#dc2626");
+        descricaoEl.focus();
+        return false;
+    }
+    if (!valor || valor <= 0) {
+        mostrarToast("Por favor, informe um valor válido maior que zero!", "fa-dollar-sign", "#dc2626");
+        valorEl.focus();
+        return false;
+    }
+    if (!conta) {
+        mostrarToast("Por favor, selecione uma conta!", "fa-university", "#d97706");
+        contaEl.focus();
+        return false;
+    }
+
+    return { data, tipo, descricao, valor, conta };
 }
 
 /* ============================================================
    CRUD
    ============================================================ */
 function salvar() {
-    const data = dataEl.value, tipo = tipoEl.value,
-          descricao = descricaoEl.value,
-          valor = parseFloat(valorEl.value), conta = contaEl.value;
-    if (!data || !tipo || !descricao || !valor || !conta) { alert("⚠️ Preencha todos os campos!"); return; }
-    dados.push({ data, tipo, descricao, valor, conta });
+    const dadosValidados = validarFormulario();
+    if (!dadosValidados) return;
+
+    dados.push(dadosValidados);
     localStorage.setItem("financeiro_sergio", JSON.stringify(dados));
-    descricaoEl.value = ""; valorEl.value = ""; tipoEl.value = ""; contaEl.value = "";
-    dataEl.value = new Date().toISOString().split("T")[0];
+
+    limparForm();
     mostrar();
+
+    const icone = dadosValidados.tipo === "Receita" ? "fa-arrow-trend-up" : "fa-arrow-trend-down";
+    const cor = dadosValidados.tipo === "Receita" ? "#059669" : "#dc2626";
+    mostrarToast(`${dadosValidados.tipo} de R$ ${formatarMoeda(dadosValidados.valor)} salva com sucesso!`, icone, cor);
 }
 
 function limparForm() {
-    descricaoEl.value = ""; valorEl.value = ""; tipoEl.value = ""; contaEl.value = "";
+    descricaoEl.value = "";
+    valorEl.value = "";
+    tipoEl.value = "";
+    contaEl.value = "";
     dataEl.value = new Date().toISOString().split("T")[0];
+    descricaoEl.focus();
 }
 
 function editar(index) {
-    const d = dados[index];
-    dataEl.value = d.data; tipoEl.value = d.tipo;
-    descricaoEl.value = d.descricao; valorEl.value = d.valor; contaEl.value = d.conta;
-    dados.splice(index, 1);
+    const d = dadosFiltrados[index];
+    const indexOriginal = dados.findIndex(item =>
+        item.data === d.data && item.tipo === d.tipo &&
+        item.descricao === d.descricao && item.valor === d.valor && item.conta === d.conta
+    );
+
+    dataEl.value = d.data;
+    tipoEl.value = d.tipo;
+    descricaoEl.value = d.descricao;
+    valorEl.value = d.valor;
+    contaEl.value = d.conta;
+
+    dados.splice(indexOriginal, 1);
     localStorage.setItem("financeiro_sergio", JSON.stringify(dados));
     mostrar();
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    descricaoEl.focus();
+
+    mostrarToast("Lançamento carregado para edição!", "fa-edit", "#d97706");
 }
 
 function excluir(index) {
-    if (confirm("❌ Deseja excluir este lançamento?")) {
-        dados.splice(index, 1);
+    const d = dadosFiltrados[index];
+
+    if (confirm(`🗑️ Deseja realmente excluir este lançamento?\n\n${d.descricao}\nR$ ${formatarMoeda(d.valor)}\n${d.conta}`)) {
+        const indexOriginal = dados.findIndex(item =>
+            item.data === d.data && item.tipo === d.tipo &&
+            item.descricao === d.descricao && item.valor === d.valor && item.conta === d.conta
+        );
+
+        dados.splice(indexOriginal, 1);
         localStorage.setItem("financeiro_sergio", JSON.stringify(dados));
         mostrar();
+
+        mostrarToast("Lançamento excluído com sucesso!", "fa-trash-can", "#dc2626");
     }
 }
 
 /* ============================================================
-   MOSTRAR LISTA + ATUALIZAR STATS DE EXPORTAÇÃO
+   BUSCA
    ============================================================ */
-function mostrar() {
-    lista.innerHTML = "";
-    let saldoTotal = 0, totalReceita = 0, totalDespesa = 0;
-    dados.sort((a, b) => b.data.localeCompare(a.data));
+function buscar() {
+    const termo = buscaEl.value.toLowerCase().trim();
 
-    if (dados.length === 0) {
-        lista.innerHTML = `<div class="lista-vazia"><div class="lista-vazia-icon">📭</div><p>Nenhum lançamento registrado</p></div>`;
-        saldoEl.innerText = "0.00"; totalReceitaEl.innerText = "0.00"; totalDespesaEl.innerText = "0.00";
+    if (termo === "") {
+        dadosFiltrados = [...dados];
     } else {
-        dados.forEach((d, index) => {
-            const v = d.tipo === "Receita" ? d.valor : -d.valor;
-            saldoTotal += v;
-            d.tipo === "Receita" ? totalReceita += d.valor : totalDespesa += d.valor;
-            const df = new Date(d.data + "T00:00:00").toLocaleDateString('pt-BR');
-            lista.innerHTML += `
-            <div class="item">
-                <div class="item-info">
-                    <div class="item-tipo ${d.tipo === "Receita" ? "item-receita" : "item-despesa"}">
-                        ${d.tipo === "Receita" ? "📈" : "📉"} ${d.tipo}
-                    </div>
-                    <div class="item-descricao">${d.descricao}</div>
-                    <div class="item-meta">${df} • ${d.conta}</div>
-                </div>
-                <div class="item-valor ${d.tipo === "Receita" ? "receita" : "despesa"}">
-                    ${d.tipo === "Receita" ? "+" : "-"} R$ ${d.valor.toFixed(2)}
-                </div>
-                <div class="item-botoes">
-                    <button class="btn-pequeno btn-editar"  onclick="editar(${index})">✏️ Editar</button>
-                    <button class="btn-pequeno btn-excluir" onclick="excluir(${index})">🗑️ Excluir</button>
-                </div>
-            </div>`;
-        });
-        saldoEl.innerText = saldoTotal.toFixed(2);
-        totalReceitaEl.innerText = totalReceita.toFixed(2);
-        totalDespesaEl.innerText = totalDespesa.toFixed(2);
+        dadosFiltrados = dados.filter(d =>
+            d.descricao.toLowerCase().includes(termo) ||
+            d.conta.toLowerCase().includes(termo) ||
+            d.valor.toString().includes(termo)
+        );
     }
 
+    mostrarLista();
+}
+
+/* ============================================================
+   CALCULAR SALDO ANTERIOR
+   ============================================================ */
+function calcularSaldoAnterior(dataInicio, contaFiltro) {
+    let saldoAnterior = 0;
+
+    dados.forEach(d => {
+        if (d.data < dataInicio) {
+            if (contaFiltro === "Todas" || d.conta === contaFiltro) {
+                if (d.tipo === "Receita") {
+                    saldoAnterior += d.valor;
+                } else {
+                    saldoAnterior -= d.valor;
+                }
+            }
+        }
+    });
+
+    return saldoAnterior;
+}
+
+/* ============================================================
+   MOSTRAR LISTA
+   ============================================================ */
+function mostrarLista() {
+    lista.innerHTML = "";
+
+    if (dadosFiltrados.length === 0) {
+        const mensagem = buscaEl.value.trim() !== ""
+            ? "Nenhum lançamento encontrado para esta busca"
+            : "Nenhum lançamento registrado";
+        lista.innerHTML = `
+            <div class="lista-vazia">
+                <i class="fas fa-inbox lista-vazia-icon"></i>
+                <p>${mensagem}</p>
+            </div>`;
+        return;
+    }
+
+    const listaOrdenada = [...dadosFiltrados].sort((a, b) => b.data.localeCompare(a.data));
+
+    listaOrdenada.forEach((d, index) => {
+        const df = new Date(d.data + "T00:00:00").toLocaleDateString('pt-BR');
+        const icone = d.tipo === "Receita" ? "fa-arrow-trend-up" : "fa-arrow-trend-down";
+        const sinal = d.tipo === "Receita" ? "+" : "-";
+        const classeValor = d.tipo === "Receita" ? "receita" : "despesa";
+        const classeTipo = d.tipo === "Receita" ? "item-receita" : "item-despesa";
+
+        lista.innerHTML += `
+        <div class="item">
+            <div class="item-info">
+                <div class="item-tipo ${classeTipo}">
+                    <i class="fas ${icone}"></i>${d.tipo}
+                </div>
+                <div class="item-descricao">${d.descricao}</div>
+                <div class="item-meta">
+                    <span><i class="far fa-calendar"></i>${df}</span>
+                    <span><i class="fas fa-university"></i>${d.conta}</span>
+                </div>
+            </div>
+            <div class="item-valor ${classeValor}">
+                ${sinal} R$ ${formatarMoeda(d.valor)}
+            </div>
+            <div class="item-botoes">
+                <button class="btn-pequeno btn-editar" onclick="editar(${index})">
+                    <i class="fas fa-pen"></i>Editar
+                </button>
+                <button class="btn-pequeno btn-excluir" onclick="excluir(${index})">
+                    <i class="fas fa-trash"></i>Excluir
+                </button>
+            </div>
+        </div>`;
+    });
+}
+
+/* ============================================================
+   MOSTRAR (ATUALIZA TUDO)
+   ============================================================ */
+function mostrar() {
+    dadosFiltrados = [...dados];
+    buscaEl.value = "";
+
+    let saldoTotal = 0, totalReceita = 0, totalDespesa = 0;
+
+    dados.forEach(d => {
+        if (d.tipo === "Receita") {
+            totalReceita += d.valor;
+            saldoTotal += d.valor;
+        } else {
+            totalDespesa += d.valor;
+            saldoTotal -= d.valor;
+        }
+    });
+
+    saldoEl.innerText = formatarMoeda(Math.abs(saldoTotal));
+    saldoEl.parentElement.style.color = saldoTotal >= 0 ? "#1e40af" : "#dc2626";
+
+    totalReceitaEl.innerText = formatarMoeda(totalReceita);
+    totalDespesaEl.innerText = formatarMoeda(totalDespesa);
+
     // Atualiza painel de exportação
-    const fmt = v => "R$ " + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    document.getElementById("expTotal").textContent   = dados.length;
-    document.getElementById("expReceita").textContent = fmt(totalReceita);
-    document.getElementById("expDespesa").textContent = fmt(totalDespesa);
-    const saldoGeral = totalReceita - totalDespesa;
+    document.getElementById("expTotal").textContent = dados.length;
+    document.getElementById("expReceita").textContent = "R$ " + formatarMoeda(totalReceita);
+    document.getElementById("expDespesa").textContent = "R$ " + formatarMoeda(totalDespesa);
+
     const expSaldoEl = document.getElementById("expSaldo");
-    expSaldoEl.textContent = fmt(Math.abs(saldoGeral));
-    expSaldoEl.style.color = saldoGeral >= 0 ? "#3b82f6" : "#ef4444";
-    if (saldoGeral < 0) expSaldoEl.textContent = "-" + expSaldoEl.textContent;
+    expSaldoEl.textContent = (saldoTotal < 0 ? "- " : "") + "R$ " + formatarMoeda(Math.abs(saldoTotal));
+    expSaldoEl.style.color = saldoTotal >= 0 ? "#0284c7" : "#dc2626";
+
+    mostrarLista();
 }
 
 /* ============================================================
    PDF HELPER FUNCTIONS
    ============================================================ */
-function pdfNovaLinha(doc, y, margem, limiteY) {
-    if (y > limiteY) {
-        doc.addPage();
-        return margem;
-    }
-    return y;
-}
-
 function pdfRodape(doc, pagina, totalPaginas) {
     const larg = doc.internal.pageSize.getWidth();
-    const alt  = doc.internal.pageSize.getHeight();
+    const alt = doc.internal.pageSize.getHeight();
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
     doc.setFont(undefined, "normal");
-    doc.text("Financeiro Sergio — Gerado em " + new Date().toLocaleString('pt-BR'), 14, alt - 8);
+    doc.text("Financeiro Sergio Pro — Gerado em " + new Date().toLocaleString('pt-BR'), 14, alt - 8);
     doc.text("Página " + pagina + " de " + totalPaginas, larg - 14, alt - 8, { align: "right" });
 }
 
 /* ============================================================
-   EXPORTAR TODOS OS LANÇAMENTOS — PDF COMPLETO
+   EXTRATO BANCÁRIO PROFISSIONAL - COM SALDO ANTERIOR
+   ============================================================ */
+function relatorioPDF() {
+    const inicio = dataInicio.value, fim = dataFim.value;
+    const contaFiltro = contaRelatorio.value;
+
+    if (!inicio || !fim) {
+        mostrarToast("Por favor, selecione as datas de início e fim!", "fa-calendar-xmark", "#dc2626");
+        return;
+    }
+
+    const saldoAnterior = calcularSaldoAnterior(inicio, contaFiltro);
+
+    let listaPDF = dados.filter(d => {
+        return d.data >= inicio && d.data <= fim &&
+               (contaFiltro === "Todas" || d.conta === contaFiltro);
+    });
+
+    if (listaPDF.length === 0) {
+        mostrarToast("Nenhum lançamento encontrado para o período selecionado!", "fa-file-circle-xmark", "#d97706");
+        return;
+    }
+
+    listaPDF.sort((a, b) => a.data.localeCompare(b.data));
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const larg = doc.internal.pageSize.getWidth();
+    const M = 14;
+    const LIMITE_Y = 270;
+    let y = 0;
+    let pagAtual = 1;
+
+    /* CAPA DO EXTRATO */
+    doc.setFillColor(30, 60, 114);
+    doc.rect(0, 0, larg, 50, "F");
+
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(24);
+    doc.setTextColor(255, 255, 255);
+    doc.text("🏦 EXTRATO BANCÁRIO", larg / 2, 20, { align: "center" });
+
+    doc.setFontSize(13);
+    doc.setFont(undefined, "normal");
+    doc.text("FINANCEIRO SERGIO PRO", larg / 2, 30, { align: "center" });
+
+    doc.setFontSize(10);
+    const agora = new Date().toLocaleString('pt-BR');
+    doc.text("Gerado em: " + agora, larg / 2, 40, { align: "center" });
+
+    y = 60;
+
+    // Informações do extrato
+    doc.setFillColor(245, 247, 250);
+    doc.rect(M, y, larg - M * 2, 40, "F");
+    doc.setDrawColor(30, 60, 114);
+    doc.setLineWidth(0.5);
+    doc.rect(M, y, larg - M * 2, 40);
+
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(30, 60, 114);
+
+    y += 8;
+    doc.text("DADOS DO EXTRATO", M + 4, y);
+
+    y += 8;
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(60, 60, 60);
+
+    const dIF = new Date(inicio + "T00:00:00").toLocaleDateString('pt-BR');
+    const dFF = new Date(fim + "T00:00:00").toLocaleDateString('pt-BR');
+
+    doc.text("Período:", M + 4, y);
+    doc.setFont(undefined, "bold");
+    doc.text(dIF + " a " + dFF, M + 30, y);
+
+    y += 7;
+    doc.setFont(undefined, "normal");
+    doc.text("Conta:", M + 4, y);
+    doc.setFont(undefined, "bold");
+    doc.text(contaFiltro, M + 30, y);
+
+    y += 7;
+    doc.setFont(undefined, "normal");
+    doc.text("Lançamentos:", M + 4, y);
+    doc.setFont(undefined, "bold");
+    doc.text(String(listaPDF.length), M + 30, y);
+
+    y += 15;
+
+    /* RESUMO FINANCEIRO */
+    const receitasPeriodo = listaPDF.filter(d => d.tipo === "Receita").reduce((s, d) => s + d.valor, 0);
+    const despesasPeriodo = listaPDF.filter(d => d.tipo === "Despesa").reduce((s, d) => s + d.valor, 0);
+    const saldoPeriodo = receitasPeriodo - despesasPeriodo;
+    const saldoFinal = saldoAnterior + saldoPeriodo;
+
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(30, 60, 114);
+    doc.text("RESUMO FINANCEIRO", M, y);
+    y += 2;
+    doc.setDrawColor(30, 60, 114);
+    doc.setLineWidth(0.3);
+    doc.line(M, y, larg - M, y);
+    y += 8;
+
+    const cW = (larg - M * 2 - 15) / 4;
+
+    // Card 1: Saldo Anterior
+    let cx = M;
+    doc.setFillColor(100, 116, 139);
+    doc.roundedRect(cx, y, cW, 22, 2, 2, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(7);
+    doc.text("SALDO ANTERIOR", cx + cW / 2, y + 6, { align: "center" });
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(9);
+    const saldoAntStr = (saldoAnterior < 0 ? "-" : "") + "R$ " + formatarMoeda(Math.abs(saldoAnterior));
+    doc.text(saldoAntStr, cx + cW / 2, y + 15, { align: "center" });
+
+    // Card 2: Receitas
+    cx += cW + 5;
+    doc.setFillColor(16, 185, 129);
+    doc.roundedRect(cx, y, cW, 22, 2, 2, "F");
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(7);
+    doc.text("RECEITAS", cx + cW / 2, y + 6, { align: "center" });
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(9);
+    doc.text("+ R$ " + formatarMoeda(receitasPeriodo), cx + cW / 2, y + 15, { align: "center" });
+
+    // Card 3: Despesas
+    cx += cW + 5;
+    doc.setFillColor(239, 68, 68);
+    doc.roundedRect(cx, y, cW, 22, 2, 2, "F");
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(7);
+    doc.text("DESPESAS", cx + cW / 2, y + 6, { align: "center" });
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(9);
+    doc.text("- R$ " + formatarMoeda(despesasPeriodo), cx + cW / 2, y + 15, { align: "center" });
+
+    // Card 4: Saldo Final
+    cx += cW + 5;
+    doc.setFillColor(saldoFinal >= 0 ? 59 : 220, saldoFinal >= 0 ? 130 : 38, saldoFinal >= 0 ? 246 : 38);
+    doc.roundedRect(cx, y, cW, 22, 2, 2, "F");
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(7);
+    doc.text("SALDO FINAL", cx + cW / 2, y + 6, { align: "center" });
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(9);
+    const saldoFinalStr = (saldoFinal < 0 ? "-" : "") + "R$ " + formatarMoeda(Math.abs(saldoFinal));
+    doc.text(saldoFinalStr, cx + cW / 2, y + 15, { align: "center" });
+
+    y += 30;
+
+    /* LANÇAMENTOS DETALHADOS */
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(30, 60, 114);
+    doc.text("LANÇAMENTOS DO PERÍODO", M, y);
+    y += 2;
+    doc.setLineWidth(0.3);
+    doc.line(M, y, larg - M, y);
+    y += 8;
+
+    function desenharCabecalho() {
+        doc.setFillColor(30, 60, 114);
+        doc.rect(M, y, larg - M * 2, 8, "F");
+        doc.setFont(undefined, "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(255, 255, 255);
+        doc.text("DATA", M + 3, y + 5.5);
+        doc.text("DESCRIÇÃO", M + 28, y + 5.5);
+        doc.text("CONTA", M + 90, y + 5.5);
+        doc.text("CRÉDITO", M + 125, y + 5.5, { align: "right" });
+        doc.text("DÉBITO", M + 155, y + 5.5, { align: "right" });
+        doc.text("SALDO", larg - M - 3, y + 5.5, { align: "right" });
+        y += 10;
+    }
+
+    desenharCabecalho();
+
+    // Linha com saldo anterior
+    doc.setFillColor(255, 250, 240);
+    doc.rect(M, y - 1, larg - M * 2, 8, "F");
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(100, 116, 139);
+    doc.text("----", M + 3, y + 5);
+    doc.text("SALDO ANTERIOR", M + 28, y + 5);
+    doc.text("---", M + 90, y + 5);
+    doc.text("---", M + 125, y + 5, { align: "right" });
+    doc.text("---", M + 155, y + 5, { align: "right" });
+    doc.setTextColor(saldoAnterior >= 0 ? 59 : 239, saldoAnterior >= 0 ? 130 : 68, saldoAnterior >= 0 ? 246 : 68);
+    doc.text(saldoAntStr, larg - M - 3, y + 5, { align: "right" });
+    y += 9;
+
+    let saldoAcum = saldoAnterior;
+    let linhaAlt = false;
+
+    listaPDF.forEach((d, idx) => {
+        if (y > LIMITE_Y) {
+            pdfRodape(doc, pagAtual, "?");
+            doc.addPage();
+            pagAtual++;
+            y = M;
+
+            doc.setFillColor(30, 60, 114);
+            doc.rect(0, 0, larg, 12, "F");
+            doc.setFont(undefined, "bold");
+            doc.setFontSize(9);
+            doc.setTextColor(255, 255, 255);
+            doc.text("EXTRATO BANCÁRIO — " + contaFiltro + " (continuação)", larg / 2, 8, { align: "center" });
+            y = 18;
+
+            desenharCabecalho();
+            linhaAlt = false;
+        }
+
+        const credito = d.tipo === "Receita" ? d.valor : 0;
+        const debito = d.tipo === "Despesa" ? d.valor : 0;
+        saldoAcum += credito - debito;
+
+        if (linhaAlt) {
+            doc.setFillColor(250, 250, 252);
+            doc.rect(M, y - 1, larg - M * 2, 8, "F");
+        }
+        linhaAlt = !linhaAlt;
+
+        const df = new Date(d.data + "T00:00:00").toLocaleDateString('pt-BR');
+
+        doc.setFont(undefined, "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(60, 60, 60);
+        doc.text(df, M + 3, y + 5);
+
+        const desc = d.descricao.length > 25 ? d.descricao.substring(0, 24) + "…" : d.descricao;
+        doc.setFont(undefined, "bold");
+        doc.setTextColor(31, 41, 55);
+        doc.text(desc, M + 28, y + 5);
+
+        doc.setFont(undefined, "normal");
+        doc.setTextColor(100, 100, 100);
+        const contaStr = d.conta.length > 15 ? d.conta.substring(0, 14) + "…" : d.conta;
+        doc.text(contaStr, M + 90, y + 5);
+
+        doc.setFont(undefined, "bold");
+        if (credito > 0) {
+            doc.setTextColor(16, 185, 129);
+            doc.text("+ " + formatarMoeda(credito), M + 125, y + 5, { align: "right" });
+        } else {
+            doc.setTextColor(150, 150, 150);
+            doc.text("---", M + 125, y + 5, { align: "right" });
+        }
+
+        if (debito > 0) {
+            doc.setTextColor(239, 68, 68);
+            doc.text("- " + formatarMoeda(debito), M + 155, y + 5, { align: "right" });
+        } else {
+            doc.setTextColor(150, 150, 150);
+            doc.text("---", M + 155, y + 5, { align: "right" });
+        }
+
+        doc.setTextColor(saldoAcum >= 0 ? 59 : 239, saldoAcum >= 0 ? 130 : 68, saldoAcum >= 0 ? 246 : 68);
+        doc.setFont(undefined, "bold");
+        const saldoStr = (saldoAcum < 0 ? "- " : "") + "R$ " + formatarMoeda(Math.abs(saldoAcum));
+        doc.text(saldoStr, larg - M - 3, y + 5, { align: "right" });
+
+        y += 9;
+    });
+
+    /* RESUMO FINAL - DRE MELHORADA */
+    y += 5;
+    doc.setDrawColor(30, 60, 114);
+    doc.setLineWidth(0.8);
+    doc.line(M, y, larg - M, y);
+    y += 10;
+
+    doc.setFillColor(30, 60, 114);
+    doc.rect(M, y, larg - M * 2, 10, "F");
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(255, 255, 255);
+    doc.text("DEMONSTRAÇÃO DO RESULTADO DO PERÍODO (DRE)", M + 4, y + 6.5);
+    y += 12;
+
+    const dreHeight = 52;
+    doc.setFillColor(255, 255, 255);
+    doc.rect(M, y, larg - M * 2, dreHeight, "F");
+    doc.setDrawColor(30, 60, 114);
+    doc.setLineWidth(1);
+    doc.rect(M, y, larg - M * 2, dreHeight);
+
+    y += 8;
+
+    doc.setFillColor(248, 250, 252);
+    doc.rect(M + 2, y - 3, larg - M * 2 - 4, 7, "F");
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(9.5);
+    doc.setTextColor(71, 85, 105);
+    doc.text("(+) Saldo Anterior:", M + 6, y + 1);
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(71, 85, 105);
+    doc.text(saldoAntStr, larg - M - 6, y + 1, { align: "right" });
+    y += 9;
+
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(9.5);
+    doc.setTextColor(21, 128, 61);
+    doc.text("(+) Total de Receitas:", M + 6, y);
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(16, 185, 129);
+    doc.text("+ R$ " + formatarMoeda(receitasPeriodo), larg - M - 6, y, { align: "right" });
+    y += 8;
+
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(9.5);
+    doc.setTextColor(185, 28, 28);
+    doc.text("(-) Total de Despesas:", M + 6, y);
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(239, 68, 68);
+    doc.text("- R$ " + formatarMoeda(despesasPeriodo), larg - M - 6, y, { align: "right" });
+    y += 10;
+
+    doc.setDrawColor(30, 60, 114);
+    doc.setLineWidth(0.5);
+    doc.line(M + 6, y, larg - M - 6, y);
+    y += 1;
+    doc.line(M + 6, y, larg - M - 6, y);
+    y += 7;
+
+    const saldoFinalHeight = 12;
+    doc.setFillColor(saldoFinal >= 0 ? 219 : 254, saldoFinal >= 0 ? 234 : 226, saldoFinal >= 0 ? 254 : 225);
+    doc.rect(M + 2, y - 5, larg - M * 2 - 4, saldoFinalHeight, "F");
+
+    doc.setFillColor(saldoFinal >= 0 ? 59 : 239, saldoFinal >= 0 ? 130 : 68, saldoFinal >= 0 ? 246 : 68);
+    doc.rect(M + 2, y - 5, 3, saldoFinalHeight, "F");
+
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(30, 60, 114);
+    doc.text("(=) SALDO FINAL:", M + 10, y + 2);
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(13);
+    doc.setTextColor(saldoFinal >= 0 ? 59 : 239, saldoFinal >= 0 ? 130 : 68, saldoFinal >= 0 ? 246 : 68);
+    doc.text(saldoFinalStr, larg - M - 6, y + 2, { align: "right" });
+
+    pdfRodape(doc, pagAtual, "?");
+
+    const totalPags = doc.internal.getNumberOfPages();
+    for (let p = 1; p <= totalPags; p++) {
+        doc.setPage(p);
+        const alt = doc.internal.pageSize.getHeight();
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.setFont(undefined, "normal");
+        doc.setFillColor(255, 255, 255);
+        doc.rect(larg - 45, alt - 12, 44, 8, "F");
+        doc.text("Página " + p + " de " + totalPags, larg - M, alt - 8, { align: "right" });
+    }
+
+    const dataArq = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+    doc.save("Extrato_" + contaFiltro.replace(/[^a-zA-Z0-9]/g, '_') + "_" + dataArq + ".pdf");
+
+    mostrarToast("Extrato bancário gerado com sucesso!", "fa-file-pdf", "#059669");
+}
+
+/* ============================================================
+   EXPORTAR TODOS OS LANÇAMENTOS
    ============================================================ */
 function exportarTodosPDF() {
     if (dados.length === 0) {
-        alert("⚠️ Não há lançamentos para exportar!");
+        mostrarToast("Não há lançamentos para exportar!", "fa-file-circle-xmark", "#d97706");
         return;
     }
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const larg = doc.internal.pageSize.getWidth();   // 210
-    const M = 14;   // margem lateral
-    const LIMITE_Y = 272; // rodapé começa aqui
+    const larg = doc.internal.pageSize.getWidth();
+    const M = 14;
+    const LIMITE_Y = 272;
     let y = 0;
     let pagAtual = 1;
 
-    /* ---------- TOTAIS GERAIS ---------- */
     const listaOrdenada = [...dados].sort((a, b) => a.data.localeCompare(b.data));
-    const totalRec  = listaOrdenada.filter(d => d.tipo === "Receita").reduce((s, d) => s + d.valor, 0);
+    const totalRec = listaOrdenada.filter(d => d.tipo === "Receita").reduce((s, d) => s + d.valor, 0);
     const totalDesp = listaOrdenada.filter(d => d.tipo === "Despesa").reduce((s, d) => s + d.valor, 0);
     const saldoGeral = totalRec - totalDesp;
 
-    /* ---------- CONTAS DISTINTAS ---------- */
     const contasUnicas = [...new Set(listaOrdenada.map(d => d.conta))];
 
-    /* ======================================================
-       PÁGINA 1 — CAPA / RESUMO
-       ====================================================== */
-
-    // Faixa de título
+    /* PÁGINA 1 — CAPA / RESUMO */
     doc.setFillColor(30, 60, 114);
     doc.rect(0, 0, larg, 42, "F");
 
     doc.setFont(undefined, "bold");
     doc.setFontSize(22);
     doc.setTextColor(255, 255, 255);
-    doc.text("FINANCEIRO SERGIO", larg / 2, 18, { align: "center" });
+    doc.text("FINANCEIRO SERGIO PRO", larg / 2, 18, { align: "center" });
 
     doc.setFont(undefined, "normal");
     doc.setFontSize(11);
-    doc.text("Relatório Completo de Lançamentos", larg / 2, 27, { align: "center" });
+    doc.text("Relatório Completo de Lançamentos Financeiros", larg / 2, 27, { align: "center" });
 
     doc.setFontSize(9);
     const agora = new Date().toLocaleString('pt-BR');
@@ -661,11 +1677,10 @@ function exportarTodosPDF() {
 
     y = 52;
 
-    /* ---- CARDS RESUMO ---- */
     const cards = [
-        { label: "Total de Receitas", valor: totalRec,   cor: [16, 185, 129],  icone: "RECEITAS" },
-        { label: "Total de Despesas", valor: totalDesp,  cor: [239, 68,  68],  icone: "DESPESAS" },
-        { label: "Saldo Geral",       valor: saldoGeral, cor: saldoGeral >= 0 ? [59, 130, 246] : [239, 68, 68], icone: "SALDO" },
+        { label: "Total de Receitas", valor: totalRec, cor: [16, 185, 129] },
+        { label: "Total de Despesas", valor: totalDesp, cor: [239, 68, 68] },
+        { label: "Saldo Geral", valor: saldoGeral, cor: saldoGeral >= 0 ? [59, 130, 246] : [239, 68, 68] },
     ];
     const cW = (larg - M * 2 - 10) / 3;
     cards.forEach((c, i) => {
@@ -677,38 +1692,39 @@ function exportarTodosPDF() {
         doc.setFontSize(7.5);
         doc.text(c.label.toUpperCase(), cx + cW / 2, y + 7, { align: "center" });
         doc.setFontSize(11);
-        const vStr = (c.valor < 0 ? "-" : "") + "R$ " + Math.abs(c.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        const vStr = (c.valor < 0 ? "-" : "") + "R$ " + formatarMoeda(Math.abs(c.valor));
         doc.text(vStr, cx + cW / 2, y + 17, { align: "center" });
     });
 
     y += 32;
 
-    /* ---- RESUMO POR CONTA ---- */
     doc.setTextColor(30, 60, 114);
     doc.setFont(undefined, "bold");
     doc.setFontSize(12);
     doc.text("Resumo por Conta", M, y);
     y += 6;
 
-    // Cabeçalho tabela resumo
     doc.setFillColor(30, 60, 114);
     doc.rect(M, y, larg - M * 2, 7, "F");
     doc.setTextColor(255, 255, 255);
     doc.setFont(undefined, "bold");
     doc.setFontSize(9);
-    doc.text("CONTA",           M + 3,  y + 5);
-    doc.text("RECEITAS",        105,    y + 5, { align: "right" });
-    doc.text("DESPESAS",        140,    y + 5, { align: "right" });
-    doc.text("SALDO",           larg - M - 2, y + 5, { align: "right" });
+    doc.text("CONTA", M + 3, y + 5);
+    doc.text("RECEITAS", 105, y + 5, { align: "right" });
+    doc.text("DESPESAS", 140, y + 5, { align: "right" });
+    doc.text("SALDO", larg - M - 2, y + 5, { align: "right" });
     y += 9;
 
     let linhaAlterna = false;
     contasUnicas.forEach(conta => {
-        const rec  = listaOrdenada.filter(d => d.conta === conta && d.tipo === "Receita").reduce((s, d) => s + d.valor, 0);
+        const rec = listaOrdenada.filter(d => d.conta === conta && d.tipo === "Receita").reduce((s, d) => s + d.valor, 0);
         const desp = listaOrdenada.filter(d => d.conta === conta && d.tipo === "Despesa").reduce((s, d) => s + d.valor, 0);
-        const sld  = rec - desp;
+        const sld = rec - desp;
 
-        if (linhaAlterna) { doc.setFillColor(245, 247, 250); doc.rect(M, y - 1, larg - M * 2, 7, "F"); }
+        if (linhaAlterna) {
+            doc.setFillColor(245, 247, 250);
+            doc.rect(M, y - 1, larg - M * 2, 7, "F");
+        }
         linhaAlterna = !linhaAlterna;
 
         doc.setFont(undefined, "bold");
@@ -718,18 +1734,17 @@ function exportarTodosPDF() {
 
         doc.setFont(undefined, "normal");
         doc.setTextColor(16, 185, 129);
-        doc.text("R$ " + rec.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 105, y + 4, { align: "right" });
+        doc.text("R$ " + formatarMoeda(rec), 105, y + 4, { align: "right" });
 
         doc.setTextColor(239, 68, 68);
-        doc.text("R$ " + desp.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 140, y + 4, { align: "right" });
+        doc.text("R$ " + formatarMoeda(desp), 140, y + 4, { align: "right" });
 
         doc.setTextColor(sld >= 0 ? 59 : 239, sld >= 0 ? 130 : 68, sld >= 0 ? 246 : 68);
-        const sStr = (sld < 0 ? "-" : "") + "R$ " + Math.abs(sld).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        const sStr = (sld < 0 ? "-" : "") + "R$ " + formatarMoeda(Math.abs(sld));
         doc.text(sStr, larg - M - 2, y + 4, { align: "right" });
         y += 8;
     });
 
-    // Linha total
     doc.setDrawColor(30, 60, 114);
     doc.setLineWidth(0.4);
     doc.line(M, y, larg - M, y);
@@ -740,23 +1755,20 @@ function exportarTodosPDF() {
     doc.setTextColor(30, 60, 114);
     doc.text("TOTAIS GERAIS", M + 3, y + 4);
     doc.setTextColor(16, 185, 129);
-    doc.text("R$ " + totalRec.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 105, y + 4, { align: "right" });
+    doc.text("R$ " + formatarMoeda(totalRec), 105, y + 4, { align: "right" });
     doc.setTextColor(239, 68, 68);
-    doc.text("R$ " + totalDesp.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 140, y + 4, { align: "right" });
+    doc.text("R$ " + formatarMoeda(totalDesp), 140, y + 4, { align: "right" });
     doc.setTextColor(saldoGeral >= 0 ? 59 : 239, saldoGeral >= 0 ? 130 : 68, saldoGeral >= 0 ? 246 : 68);
-    const sgStr = (saldoGeral < 0 ? "-" : "") + "R$ " + Math.abs(saldoGeral).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    const sgStr = (saldoGeral < 0 ? "-" : "") + "R$ " + formatarMoeda(Math.abs(saldoGeral));
     doc.text(sgStr, larg - M - 2, y + 4, { align: "right" });
 
     pdfRodape(doc, pagAtual, "?");
 
-    /* ======================================================
-       PÁGINAS DE LANÇAMENTOS
-       ====================================================== */
+    /* PÁGINAS DE LANÇAMENTOS */
     doc.addPage();
     pagAtual++;
     y = M + 8;
 
-    // Banner de título da seção
     doc.setFillColor(30, 60, 114);
     doc.rect(0, 0, larg, 14, "F");
     doc.setFont(undefined, "bold");
@@ -765,42 +1777,39 @@ function exportarTodosPDF() {
     doc.text("TODOS OS LANÇAMENTOS — HISTÓRICO COMPLETO", larg / 2, 9.5, { align: "center" });
     y = 20;
 
-    /* ----- Cabeçalho da tabela de lançamentos ----- */
     function desenharCabecalhoTabela() {
         doc.setFillColor(30, 60, 114);
         doc.rect(M, y, larg - M * 2, 7, "F");
         doc.setFont(undefined, "bold");
         doc.setFontSize(8.5);
         doc.setTextColor(255, 255, 255);
-        doc.text("#",           M + 3,  y + 5);
-        doc.text("DATA",        M + 10, y + 5);
-        doc.text("DESCRIÇÃO",   M + 34, y + 5);
-        doc.text("CONTA",       M + 101, y + 5);
-        doc.text("TIPO",        M + 130, y + 5);
-        doc.text("VALOR",       larg - M - 20, y + 5, { align: "right" });
-        doc.text("SALDO",       larg - M - 2, y + 5, { align: "right" });
+        doc.text("#", M + 3, y + 5);
+        doc.text("DATA", M + 10, y + 5);
+        doc.text("DESCRIÇÃO", M + 34, y + 5);
+        doc.text("CONTA", M + 101, y + 5);
+        doc.text("TIPO", M + 130, y + 5);
+        doc.text("VALOR", larg - M - 20, y + 5, { align: "right" });
+        doc.text("SALDO", larg - M - 2, y + 5, { align: "right" });
         y += 9;
     }
 
     desenharCabecalhoTabela();
 
     let saldoAcum = 0;
-    let linhaAlt  = false;
+    let linhaAlt = false;
 
     listaOrdenada.forEach((d, idx) => {
-        // Nova página se necessário
         if (y > LIMITE_Y) {
             pdfRodape(doc, pagAtual, "?");
             doc.addPage();
             pagAtual++;
 
-            // Banner mini no topo da nova página
             doc.setFillColor(30, 60, 114);
             doc.rect(0, 0, larg, 10, "F");
             doc.setFont(undefined, "bold");
             doc.setFontSize(8);
             doc.setTextColor(255, 255, 255);
-            doc.text("FINANCEIRO SERGIO — LANÇAMENTOS (continuação)", larg / 2, 7, { align: "center" });
+            doc.text("FINANCEIRO SERGIO PRO — LANÇAMENTOS (continuação)", larg / 2, 7, { align: "center" });
             y = 16;
 
             desenharCabecalhoTabela();
@@ -808,10 +1817,9 @@ function exportarTodosPDF() {
         }
 
         const credito = d.tipo === "Receita" ? d.valor : 0;
-        const debito  = d.tipo === "Despesa" ? d.valor : 0;
+        const debito = d.tipo === "Despesa" ? d.valor : 0;
         saldoAcum += credito - debito;
 
-        // Linha alternada
         if (linhaAlt) {
             doc.setFillColor(245, 247, 250);
             doc.rect(M, y - 1, larg - M * 2, 7.5, "F");
@@ -828,7 +1836,6 @@ function exportarTodosPDF() {
         doc.setTextColor(60, 60, 60);
         doc.text(df, M + 10, y + 4);
 
-        // Descrição com limite de caracteres
         const desc = d.descricao.length > 28 ? d.descricao.substring(0, 27) + "…" : d.descricao;
         doc.setFont(undefined, "bold");
         doc.setTextColor(31, 41, 55);
@@ -839,7 +1846,6 @@ function exportarTodosPDF() {
         const contaStr = d.conta.length > 14 ? d.conta.substring(0, 13) + "…" : d.conta;
         doc.text(contaStr, M + 101, y + 4);
 
-        // TIPO colorido
         if (d.tipo === "Receita") {
             doc.setTextColor(16, 185, 129);
             doc.setFont(undefined, "bold");
@@ -850,35 +1856,34 @@ function exportarTodosPDF() {
             doc.text("DESPESA", M + 130, y + 4);
         }
 
-        // Valor com sinal
         doc.setFont(undefined, "bold");
         if (credito > 0) {
             doc.setTextColor(16, 185, 129);
-            doc.text("+" + credito.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), larg - M - 20, y + 4, { align: "right" });
+            doc.text("+" + formatarMoeda(credito), larg - M - 20, y + 4, { align: "right" });
         } else {
             doc.setTextColor(239, 68, 68);
-            doc.text("-" + debito.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), larg - M - 20, y + 4, { align: "right" });
+            doc.text("-" + formatarMoeda(debito), larg - M - 20, y + 4, { align: "right" });
         }
 
-        // Saldo acumulado
         doc.setFont(undefined, "bold");
         doc.setFontSize(7.5);
-        if (saldoAcum >= 0) { doc.setTextColor(59, 130, 246); }
-        else                 { doc.setTextColor(239, 68, 68); }
-        const sStr2 = (saldoAcum < 0 ? "-" : "") + "R$" + Math.abs(saldoAcum).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        if (saldoAcum >= 0) {
+            doc.setTextColor(59, 130, 246);
+        } else {
+            doc.setTextColor(239, 68, 68);
+        }
+        const sStr2 = (saldoAcum < 0 ? "-" : "") + "R$" + formatarMoeda(Math.abs(saldoAcum));
         doc.text(sStr2, larg - M - 2, y + 4, { align: "right" });
 
         y += 8;
     });
 
-    // Linha final
     y += 2;
     doc.setDrawColor(30, 60, 114);
     doc.setLineWidth(0.4);
     doc.line(M, y, larg - M, y);
     y += 6;
 
-    // Resumo final na última página
     doc.setFont(undefined, "bold");
     doc.setFontSize(10);
     doc.setTextColor(30, 60, 114);
@@ -889,10 +1894,10 @@ function exportarTodosPDF() {
     doc.setFont(undefined, "normal");
 
     doc.setTextColor(16, 185, 129);
-    doc.text("Total de Receitas:  R$ " + totalRec.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), M, y);
+    doc.text("Total de Receitas:  R$ " + formatarMoeda(totalRec), M, y);
     y += 6;
     doc.setTextColor(239, 68, 68);
-    doc.text("Total de Despesas:  R$ " + totalDesp.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), M, y);
+    doc.text("Total de Despesas:  R$ " + formatarMoeda(totalDesp), M, y);
     y += 6;
     doc.setFont(undefined, "bold");
     doc.setFontSize(11);
@@ -901,7 +1906,6 @@ function exportarTodosPDF() {
 
     pdfRodape(doc, pagAtual, "?");
 
-    /* ----- Inserir número total de páginas em todas as páginas ----- */
     const totalPags = doc.internal.getNumberOfPages();
     for (let p = 1; p <= totalPags; p++) {
         doc.setPage(p);
@@ -909,146 +1913,83 @@ function exportarTodosPDF() {
         doc.setFontSize(8);
         doc.setTextColor(150, 150, 150);
         doc.setFont(undefined, "normal");
-        // Sobrescreve só o número de páginas (canto direito)
         doc.setFillColor(255, 255, 255);
         doc.rect(larg - 45, alt - 12, 44, 8, "F");
         doc.text("Página " + p + " de " + totalPags, larg - M, alt - 8, { align: "right" });
     }
 
     const dataArq = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
-    doc.save("FinanceiroSergio_Completo_" + dataArq + ".pdf");
+    doc.save("FinanceiroSergioPro_Completo_" + dataArq + ".pdf");
 
-    mostrarToast("✅ PDF completo gerado com " + dados.length + " lançamento(s)!", "#b91c1c");
-}
-
-/* ============================================================
-   PDF EXTRATO POR PERÍODO (original)
-   ============================================================ */
-function relatorioPDF() {
-    const inicio = dataInicio.value, fim = dataFim.value;
-    const contaFiltro = contaRelatorio.value;
-    if (!inicio || !fim) { alert("⚠️ Escolha as datas!"); return; }
-
-    let listaPDF = dados.filter(d => {
-        return d.data >= inicio && d.data <= fim &&
-               (contaFiltro === "Todas" || d.conta === contaFiltro);
-    });
-    if (listaPDF.length === 0) { alert("⚠️ Sem dados para o período selecionado!"); return; }
-    listaPDF.sort((a, b) => a.data.localeCompare(b.data));
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    let y = 20;
-
-    doc.setFontSize(20); doc.setTextColor(30, 60, 114);
-    doc.text("FINANCEIRO SERGIO", 20, y); y += 10;
-    doc.setFontSize(12); doc.setTextColor(0, 0, 0);
-    doc.text("Extrato Bancário Completo", 20, y); y += 6;
-    doc.text("Conta: " + contaFiltro, 20, y); y += 6;
-    const dIF = new Date(inicio + "T00:00:00").toLocaleDateString('pt-BR');
-    const dFF = new Date(fim    + "T00:00:00").toLocaleDateString('pt-BR');
-    doc.text("Período: " + dIF + " até " + dFF, 20, y); y += 10;
-    doc.line(20, y, 190, y); y += 10;
-
-    doc.setFillColor(30, 60, 114);
-    doc.rect(20, y - 6, 170, 8, "F");
-    doc.setFont(undefined, "bold"); doc.setFontSize(11); doc.setTextColor(255, 255, 255);
-    doc.text("DATA", 22, y);
-    doc.text("DESCRIÇÃO", 45, y);
-    doc.text("CONTA", 110, y);
-    doc.text("CRÉDITO", 140, y, { align: "right" });
-    doc.text("DÉBITO",  170, y, { align: "right" });
-    doc.text("SALDO",   190, y, { align: "right" });
-    y += 10;
-
-    doc.setFont(undefined, "normal"); doc.setFontSize(10);
-    let saldoAtual = 0;
-    listaPDF.forEach(d => {
-        if (y > 270) { doc.addPage(); y = 20; }
-        const cred = d.tipo === "Receita" ? d.valor : 0;
-        const deb  = d.tipo === "Despesa" ? d.valor : 0;
-        saldoAtual += cred - deb;
-        const df = new Date(d.data + "T00:00:00").toLocaleDateString('pt-BR');
-
-        doc.setTextColor(0, 0, 0);
-        doc.text(df, 22, y);
-        doc.text(d.descricao.substring(0, 20), 45, y);
-        doc.text(d.conta.substring(0, 15), 110, y);
-
-        doc.setTextColor(59, 130, 246); doc.setFont(undefined, "bold");
-        doc.text(cred > 0 ? cred.toFixed(2) : "-", 140, y, { align: "right" });
-        doc.setTextColor(239, 68, 68);
-        doc.text(deb  > 0 ? deb.toFixed(2)  : "-", 170, y, { align: "right" });
-        doc.setTextColor(saldoAtual >= 0 ? 16 : 239, saldoAtual >= 0 ? 185 : 68, saldoAtual >= 0 ? 129 : 68);
-        doc.text(saldoAtual.toFixed(2), 190, y, { align: "right" });
-        y += 8;
-    });
-
-    y += 5; doc.setDrawColor(0); doc.line(20, y, 190, y); y += 10;
-
-    const tC = listaPDF.filter(d => d.tipo === "Receita").reduce((s, d) => s + d.valor, 0);
-    const tD = listaPDF.filter(d => d.tipo === "Despesa").reduce((s, d) => s + d.valor, 0);
-
-    doc.setFontSize(12); doc.setFont(undefined, "bold");
-    doc.setTextColor(59, 130, 246);
-    doc.text("Total Crédito: R$ " + tC.toFixed(2), 140, y, { align: "right" }); y += 8;
-    doc.setTextColor(239, 68, 68);
-    doc.text("Total Débito: R$ " + tD.toFixed(2), 170, y, { align: "right" }); y += 10;
-    doc.setFontSize(14);
-    doc.setTextColor(saldoAtual >= 0 ? 16 : 239, saldoAtual >= 0 ? 185 : 68, saldoAtual >= 0 ? 129 : 68);
-    doc.text("Saldo Final: R$ " + saldoAtual.toFixed(2), 190, y, { align: "right" });
-
-    const dAtual = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
-    doc.save("Extrato_FinanceiroSergio_" + dAtual + ".pdf");
+    mostrarToast("Relatório completo gerado com " + dados.length + " lançamento(s)!", "fa-file-pdf", "#059669");
 }
 
 /* ============================================================
    BACKUP / RESTAURAR
    ============================================================ */
 function fazerBackup() {
-    if (dados.length === 0) { alert("⚠️ Não há lançamentos para fazer backup!"); return; }
-    const obj = { versao: "1.0", dataBackup: new Date().toISOString(), totalRegistros: dados.length, dados };
+    if (dados.length === 0) {
+        mostrarToast("Não há lançamentos para fazer backup!", "fa-database", "#d97706");
+        return;
+    }
+    const obj = {
+        versao: "2.0",
+        sistema: "Financeiro Sergio Pro",
+        dataBackup: new Date().toISOString(),
+        totalRegistros: dados.length,
+        dados
+    };
     const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
-    const url  = URL.createObjectURL(blob);
-    const dA   = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
-    const hA   = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
-    const a    = document.createElement("a");
-    a.href = url; a.download = "Backup_FinanceiroSergio_" + dA + "_" + hA + ".json";
-    document.body.appendChild(a); a.click();
-    document.body.removeChild(a); URL.revokeObjectURL(url);
-    mostrarToast("✅ Backup salvo com " + dados.length + " lançamento(s)!", "#059669");
+    const url = URL.createObjectURL(blob);
+    const dA = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+    const hA = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Backup_FinanceiroSergioPro_" + dA + "_" + hA + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    mostrarToast("Backup salvo com " + dados.length + " lançamento(s)!", "fa-cloud-download-alt", "#059669");
 }
 
 function previewArquivo(e) {
     const f = e.target.files[0];
-    document.getElementById("nomeArquivoSelecionado").textContent = f ? "📄 " + f.name : "Nenhum arquivo selecionado";
+    document.getElementById("nomeArquivoSelecionado").textContent = f ? "📄 " + f.name : "";
 }
 
 function carregarBackup() {
     const fi = document.getElementById("arquivoBackup");
-    const f  = fi.files[0];
-    if (!f) { alert("⚠️ Selecione um arquivo .json de backup primeiro!"); return; }
-    if (!f.name.endsWith(".json")) { alert("❌ Por favor, selecione apenas arquivos .json!"); return; }
+    const f = fi.files[0];
+    if (!f) {
+        mostrarToast("Selecione um arquivo .json de backup primeiro!", "fa-file-circle-exclamation", "#d97706");
+        return;
+    }
+    if (!f.name.endsWith(".json")) {
+        mostrarToast("Por favor, selecione apenas arquivos .json!", "fa-file-circle-xmark", "#dc2626");
+        return;
+    }
 
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         try {
             const cont = JSON.parse(e.target.result);
             let imp = Array.isArray(cont) ? cont : (cont.dados && Array.isArray(cont.dados) ? cont.dados : null);
             if (!imp) throw new Error("Formato inválido.");
-            const ok = imp.every(d => ["data","tipo","descricao","valor","conta"].every(k => d.hasOwnProperty(k)));
+            const ok = imp.every(d => ["data", "tipo", "descricao", "valor", "conta"].every(k => d.hasOwnProperty(k)));
             if (!ok) throw new Error("Dados incompletos no arquivo.");
-            if (!confirm(`📂 ${f.name}\n📊 Lançamentos no backup: ${imp.length}\n📋 Lançamentos atuais: ${dados.length}\n\nOK = SUBSTITUIR todos os dados pelo backup\nCancelar = Abortar`)) {
-                mostrarToast("⛔ Restauração cancelada.", "#6b7280"); return;
+            if (!confirm(`📂 ${f.name}\n📊 Lançamentos no backup: ${imp.length}\n📋 Lançamentos atuais: ${dados.length}\n\n⚠️ ATENÇÃO: Isso substituirá TODOS os dados atuais!\n\nOK = SUBSTITUIR\nCancelar = Abortar`)) {
+                mostrarToast("Restauração cancelada.", "fa-ban", "#6b7280");
+                return;
             }
             dados = imp;
             localStorage.setItem("financeiro_sergio", JSON.stringify(dados));
             mostrar();
             fi.value = "";
-            document.getElementById("nomeArquivoSelecionado").textContent = "Nenhum arquivo selecionado";
-            mostrarToast("✅ Backup restaurado! " + imp.length + " lançamento(s) carregado(s).", "#7c3aed");
-        } catch(err) {
-            alert("❌ Erro ao ler o arquivo!\n\n" + err.message);
+            document.getElementById("nomeArquivoSelecionado").textContent = "";
+            mostrarToast("Backup restaurado! " + imp.length + " lançamento(s) carregado(s).", "fa-cloud-upload-alt", "#7c3aed");
+        } catch (err) {
+            mostrarToast("Erro ao ler o arquivo! " + err.message, "fa-circle-exclamation", "#dc2626");
         }
     };
     reader.readAsText(f, "UTF-8");
