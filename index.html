@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1172,6 +1171,12 @@
                 <label>BOX</label>
                 <input type="text" id="mpg-box" readonly style="background:#f4f6fb;">
             </div>
+        <div class="form-group" id="mpg-ref-group" style="display:none;">
+            <label>Referência</label>
+            <select id="mpg-ref"></select>
+        </div>
+        <input type="hidden" id="mpg-ano">
+        <input type="hidden" id="mpg-mes">
             <div class="form-group">
                 <label>Tipo de Pagamento</label>
                 <select id="mpg-tipo" onchange="updateMpgValor()">
@@ -2965,18 +2970,35 @@
             const NAVY = [10, 42, 82];
             const BG = [245, 247, 251];
 
-            const startK = monthKey(params.startAno, params.startMes);
-            const endK = monthKey(params.endAno, params.endMes);
+            const dataIni = new Date(params.startAno, params.startMes, 1);
+            const dataFim = new Date(params.endAno, params.endMes + 1, 0);
+            const toNum = (d) => d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+            const inicioNum = toNum(dataIni);
+            const fimNum = toNum(dataFim);
+            const dataStrToNum = (s) => {
+                const raw = String(s || '').trim();
+                if (!raw) return NaN;
+                if (raw.includes('-')) {
+                    const [y, m, d] = raw.split('-').map(n => parseInt(n, 10));
+                    if ([y, m, d].some(n => Number.isNaN(n))) return NaN;
+                    return y * 10000 + m * 100 + d;
+                }
+                if (raw.includes('/')) {
+                    const [d, m, y] = raw.split('/').map(n => parseInt(n, 10));
+                    if ([y, m, d].some(n => Number.isNaN(n))) return NaN;
+                    return y * 10000 + m * 100 + d;
+                }
+                return NaN;
+            };
 
             const recebidos = pagamentos.filter(p => {
-                const k = monthKey(p.ano, p.mes);
-                if (k < startK || k > endK) return false;
+                const n = dataStrToNum(p.data);
+                if (!Number.isFinite(n)) return false;
+                if (n < inicioNum || n > fimNum) return false;
                 if (params.scope === 'individual') return p.idAssoc === params.assocId;
                 return true;
             });
 
-            const dataIni = new Date(params.startAno, params.startMes, 1);
-            const dataFim = new Date(params.endAno, params.endMes + 1, 0);
             const periodoLabel = `Período do   ${fmtDate(dataIni)}   até   ${fmtDate(dataFim)}`;
 
             const dt = new Date();
@@ -3303,7 +3325,9 @@
                     <td style="font-size: 13px; color: var(--gray-500);">${lastDate ? `último: ${formatarData(lastDate)}` : '-'}</td>
                     <td class="action-cell">
                         ${mesesLen > 1 ? 
-                            `<span style="color: var(--gray-400); font-size: 12px;">Selecione 1 mês</span>` :
+                            (pendingCount > 0 
+                                ? `<button class="btn btn-success btn-sm" onclick="abrirPgModal(${assoc.id})">Registrar</button>`
+                                : `<span style="color: var(--gray-400); font-size: 12px;">Todos pagos</span>`) :
                             (pagamentos.find(p => p.idAssoc === assoc.id && p.mes === currentRef.mes && p.ano === currentRef.ano) ? 
                                 `<button class="btn btn-outline btn-sm" onclick="estornarPagamento(${assoc.id})">Estornar</button>` : 
                                 `<button class="btn btn-success btn-sm" onclick="abrirPgModal(${assoc.id})">Registrar</button>`)
@@ -3833,29 +3857,74 @@
         let currentAssocId = null;
 
         function abrirPgModal(id) {
-            if (currentPeriodo.mesIni !== currentPeriodo.mesFim) {
-                showToast("Selecione um mês único (De = Até) para registrar pagamento.");
-                return;
-            }
             currentAssocId = id;
             const assoc = associados.find(a => a.id === id);
             const hoje = new Date();
-            
-            document.getElementById('mpg-assoc').value = assoc.nome;
-            document.getElementById('mpg-box').value = assoc.box;
-            document.getElementById('mpg-data').value = hoje.toISOString().split('T')[0];
-            
-            const anoAtual = hoje.getFullYear();
-            const mesAtual = hoje.getMonth();
+            const elAssoc = document.getElementById('mpg-assoc');
+            const elBox = document.getElementById('mpg-box');
+            const elData = document.getElementById('mpg-data');
+            const refGroup = document.getElementById('mpg-ref-group');
+            const refSel = document.getElementById('mpg-ref');
+            const hidMes = document.getElementById('mpg-mes');
+            const hidAno = document.getElementById('mpg-ano');
+            if (elAssoc) elAssoc.value = assoc.nome;
+            if (elBox) elBox.value = assoc.box;
+            if (elData) elData.value = hoje.toISOString().split('T')[0];
 
-            if (currentRef.ano < anoAtual || (currentRef.ano === anoAtual && currentRef.mes < mesAtual)) {
-                document.getElementById('mpg-tipo').value = 'atrasado';
-            } else {
-                document.getElementById('mpg-tipo').value = 'em_dia';
+            const mesesPeriodo = iterarMeses(currentPeriodo.mesIni, currentPeriodo.ano, currentPeriodo.mesFim, currentPeriodo.ano);
+            const pendentes = mesesPeriodo.filter(ref => !pagamentos.find(p => p.idAssoc === assoc.id && p.mes === ref.mes && p.ano === ref.ano));
+            if (pendentes.length === 0) {
+                showToast("Nenhuma mensalidade pendente no período selecionado.");
+                return;
             }
-            
+
+            if (pendentes.length === 1) {
+                if (refGroup) refGroup.style.display = 'none';
+                if (hidMes) hidMes.value = String(pendentes[0].mes);
+                if (hidAno) hidAno.value = String(pendentes[0].ano);
+            } else {
+                if (refGroup) refGroup.style.display = 'block';
+                if (refSel) {
+                    refSel.innerHTML = '';
+                    pendentes.forEach(ref => {
+                        const opt = document.createElement('option');
+                        opt.value = `${ref.ano}-${String(ref.mes + 1).padStart(2, '0')}`;
+                        opt.textContent = `${MESES[ref.mes]} / ${ref.ano}`;
+                        refSel.appendChild(opt);
+                    });
+                    refSel.onchange = updateMpgRef;
+                }
+                if (hidMes) hidMes.value = String(pendentes[0].mes);
+                if (hidAno) hidAno.value = String(pendentes[0].ano);
+            }
+
+            const anoBase = parseInt(hidAno?.value || String(currentRef.ano));
+            const mesBase = parseInt(hidMes?.value || String(currentRef.mes));
+            const tipoEl = document.getElementById('mpg-tipo');
+            if (tipoEl) tipoEl.value = refEstaAtrasada(anoBase, mesBase, hoje) ? 'atrasado' : 'em_dia';
             updateMpgValor();
             document.getElementById('modal-pg-overlay').classList.add('open');
+        }
+
+        function updateMpgRef() {
+            const refSel = document.getElementById('mpg-ref');
+            const hidMes = document.getElementById('mpg-mes');
+            const hidAno = document.getElementById('mpg-ano');
+            let ano = currentRef.ano;
+            let mes = currentRef.mes;
+            if (refSel && refSel.value) {
+                const parts = refSel.value.split('-');
+                if (parts.length === 2) {
+                    ano = parseInt(parts[0], 10);
+                    mes = parseInt(parts[1], 10) - 1;
+                }
+            }
+            if (hidMes) hidMes.value = String(mes);
+            if (hidAno) hidAno.value = String(ano);
+            const hoje = new Date();
+            const tipoEl = document.getElementById('mpg-tipo');
+            if (tipoEl) tipoEl.value = refEstaAtrasada(ano, mes, hoje) ? 'atrasado' : 'em_dia';
+            updateMpgValor();
         }
 
         function updateMpgValor() {
@@ -3886,10 +3955,15 @@
                 return;
             }
 
+            const selMesEl = document.getElementById('mpg-mes');
+            const selAnoEl = document.getElementById('mpg-ano');
+            const mesAlvo = selMesEl && selMesEl.value !== '' ? parseInt(selMesEl.value, 10) : currentRef.mes;
+            const anoAlvo = selAnoEl && selAnoEl.value !== '' ? parseInt(selAnoEl.value, 10) : currentRef.ano;
+
             pagamentos.push({
                 idAssoc: currentAssocId,
-                mes: currentRef.mes,
-                ano: currentRef.ano,
+                mes: mesAlvo,
+                ano: anoAlvo,
                 valor,
                 data,
                 obs,
