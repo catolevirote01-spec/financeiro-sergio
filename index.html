@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1177,6 +1178,9 @@
         </div>
         <input type="hidden" id="mpg-ano">
         <input type="hidden" id="mpg-mes">
+        <input type="hidden" id="mpg-mode">
+        <input type="hidden" id="mpg-orig-ano">
+        <input type="hidden" id="mpg-orig-mes">
             <div class="form-group">
                 <label>Tipo de Pagamento</label>
                 <select id="mpg-tipo" onchange="updateMpgValor()">
@@ -3495,6 +3499,7 @@
 
         let currentDebitosAssocId = null;
         let currentDebitosView = 'abertas';
+        let debitosEditKey = null;
 
         function setDebitosView(view) {
             currentDebitosView = view === 'pagas' ? 'pagas' : 'abertas';
@@ -3683,6 +3688,14 @@
             const fmtMoney = (v) => (Number(v) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             const pad2 = (n) => String(n).padStart(2, '0');
             const fmtDate = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}/${d.getFullYear()}`;
+            const toISO = (s) => {
+                const raw = String(s || '').trim();
+                if (!raw) return '';
+                if (raw.includes('-')) return raw;
+                const m = raw.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+                if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+                return '';
+            };
 
             tbody.innerHTML = '';
             const thead = document.getElementById('debitos-thead');
@@ -3697,7 +3710,7 @@
 
             if (thead) {
                 thead.innerHTML = currentDebitosView === 'pagas'
-                    ? `<tr><th>Referência</th><th>Status</th><th>Data Pgto</th><th>Valor</th></tr>`
+                    ? `<tr><th>Referência</th><th>Status</th><th>Data Pgto</th><th>Valor</th><th>Ações</th></tr>`
                     : `<tr><th>Referência</th><th>Status</th><th>Vencimento</th><th>Valor</th></tr>`;
             }
 
@@ -3714,13 +3727,37 @@
                     if (!pg) return;
                     totalPago += Number(pg.valor) || 0;
                     countPago++;
+                    const editing = debitosEditKey && debitosEditKey.mes === ref.mes && debitosEditKey.ano === ref.ano;
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td><span class="box-badge" style="background:#1a5ab5;font-size:11px;">${MESES[ref.mes]} / ${ref.ano}</span></td>
-                        <td><span class="status-badge s-paid">Pago</span></td>
-                        <td>${pg.data ? formatarData(pg.data) : '-'}</td>
-                        <td style="font-weight:800;">${fmtMoney(pg.valor)}</td>
-                    `;
+                    if (editing) {
+                        const opts = mesesPeriodo.map(m => {
+                            const val = `${m.ano}-${String(m.mes + 1).padStart(2, '0')}`;
+                            const sel = (m.ano === ref.ano && m.mes === ref.mes) ? 'selected' : '';
+                            return `<option value="${val}" ${sel}>${MESES[m.mes]} / ${m.ano}</option>`;
+                        }).join('');
+                        tr.innerHTML = `
+                            <td>
+                                <select id="deb-ref" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;">
+                                    ${opts}
+                                </select>
+                            </td>
+                            <td><span class="status-badge s-paid">Pago</span></td>
+                            <td><input id="deb-date" type="date" value="${toISO(pg.data)}" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;"></td>
+                            <td><input id="deb-valor" type="number" step="0.01" value="${Number(pg.valor).toFixed(2)}" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;width:130px;"></td>
+                            <td>
+                                <button class="btn btn-sm btn-success" onclick="salvarEdicaoDebito()">Salvar</button>
+                                <button class="btn btn-sm btn-undo" onclick="cancelarEdicaoDebito()">Cancelar</button>
+                            </td>
+                        `;
+                    } else {
+                        tr.innerHTML = `
+                            <td><span class="box-badge" style="background:#1a5ab5;font-size:11px;">${MESES[ref.mes]} / ${ref.ano}</span></td>
+                            <td><span class="status-badge s-paid">Pago</span></td>
+                            <td>${pg.data ? formatarData(pg.data) : '-'}</td>
+                            <td style="font-weight:800;">${fmtMoney(pg.valor)}</td>
+                            <td><button class="btn btn-sm btn-navy" onclick="iniciarEdicaoDebito(${ref.mes}, ${ref.ano})">Editar</button></td>
+                        `;
+                    }
                     tbody.appendChild(tr);
                 });
             } else {
@@ -3756,9 +3793,10 @@
 
             const totalLinhas = currentDebitosView === 'pagas' ? countPago : (countAtrasado + countAVencer);
             if (totalLinhas === 0) {
+                const colspan = currentDebitosView === 'pagas' ? 5 : 4;
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="4">
+                        <td colspan="${colspan}">
                             <div class="empty-state" style="padding: 26px 0;">
                                 <div class="empty-state-icon">✅</div>
                                 <p class="empty-state-text">${
@@ -3803,6 +3841,51 @@
                     </div>
                 `;
             }
+        }
+
+        function iniciarEdicaoDebito(mes, ano) {
+            debitosEditKey = { mes, ano };
+            rerenderDebitosModal();
+        }
+
+        function cancelarEdicaoDebito() {
+            debitosEditKey = null;
+            rerenderDebitosModal();
+        }
+
+        function salvarEdicaoDebito() {
+            if (!currentDebitosAssocId || !debitosEditKey) return;
+            const assocId = currentDebitosAssocId;
+            const origMes = debitosEditKey.mes;
+            const origAno = debitosEditKey.ano;
+            const refSel = document.getElementById('deb-ref');
+            const dateEl = document.getElementById('deb-date');
+            const valorEl = document.getElementById('deb-valor');
+            const refVal = refSel?.value || `${origAno}-${String(origMes + 1).padStart(2, '0')}`;
+            const parts = refVal.split('-');
+            const anoAlvo = parseInt(parts[0], 10);
+            const mesAlvo = parseInt(parts[1], 10) - 1;
+            const data = (dateEl?.value || '').trim();
+            const valor = parseFloat(valorEl?.value || '0');
+            if (!data || !Number.isFinite(valor)) {
+                showToast("Preencha data e valor válidos.");
+                return;
+            }
+            const tipo = refEstaAtrasada(anoAlvo, mesAlvo, new Date()) ? 'atrasado' : 'em_dia';
+            const idxOrig = pagamentos.findIndex(p => p.idAssoc === assocId && p.mes === origMes && p.ano === origAno);
+            if (idxOrig === -1) { showToast("Pagamento não encontrado."); return; }
+            const idxTarget = pagamentos.findIndex(p => p.idAssoc === assocId && p.mes === mesAlvo && p.ano === anoAlvo);
+            if (idxTarget !== -1 && idxTarget !== idxOrig) {
+                pagamentos[idxTarget] = { ...pagamentos[idxTarget], valor, data, obs: pagamentos[idxOrig].obs || '', tipo };
+                pagamentos.splice(idxOrig, 1);
+            } else {
+                pagamentos[idxOrig] = { ...pagamentos[idxOrig], mes: mesAlvo, ano: anoAlvo, valor, data, tipo };
+            }
+            debitosEditKey = null;
+            salvarDados();
+            rerenderDebitosModal();
+            atualizarInterface();
+            showToast("Pagamento atualizado!");
         }
 
         function adicionarAssociado() {
@@ -3870,6 +3953,12 @@
             if (elAssoc) elAssoc.value = assoc.nome;
             if (elBox) elBox.value = assoc.box;
             if (elData) elData.value = hoje.toISOString().split('T')[0];
+            const modeEl = document.getElementById('mpg-mode');
+            const origMesEl = document.getElementById('mpg-orig-mes');
+            const origAnoEl = document.getElementById('mpg-orig-ano');
+            if (modeEl) modeEl.value = 'create';
+            if (origMesEl) origMesEl.value = '';
+            if (origAnoEl) origAnoEl.value = '';
 
             const mesesPeriodo = iterarMeses(currentPeriodo.mesIni, currentPeriodo.ano, currentPeriodo.mesFim, currentPeriodo.ano);
             const pendentes = mesesPeriodo.filter(ref => !pagamentos.find(p => p.idAssoc === assoc.id && p.mes === ref.mes && p.ano === ref.ano));
@@ -3927,6 +4016,55 @@
             updateMpgValor();
         }
 
+        function abrirEditarPagamento(idAssoc, mes, ano) {
+            currentAssocId = idAssoc;
+            const assoc = associados.find(a => a.id === idAssoc);
+            const pg = pagamentos.find(p => p.idAssoc === idAssoc && p.mes === mes && p.ano === ano);
+            if (!assoc || !pg) {
+                showToast("Pagamento não encontrado.");
+                return;
+            }
+            const hoje = new Date();
+            const elAssoc = document.getElementById('mpg-assoc');
+            const elBox = document.getElementById('mpg-box');
+            const elData = document.getElementById('mpg-data');
+            const elValor = document.getElementById('mpg-valor');
+            const elObs = document.getElementById('mpg-obs');
+            const tipoEl = document.getElementById('mpg-tipo');
+            const refGroup = document.getElementById('mpg-ref-group');
+            const refSel = document.getElementById('mpg-ref');
+            const hidMes = document.getElementById('mpg-mes');
+            const hidAno = document.getElementById('mpg-ano');
+            const modeEl = document.getElementById('mpg-mode');
+            const origMesEl = document.getElementById('mpg-orig-mes');
+            const origAnoEl = document.getElementById('mpg-orig-ano');
+            if (elAssoc) elAssoc.value = assoc.nome;
+            if (elBox) elBox.value = assoc.box;
+            if (elData) elData.value = pg.data || hoje.toISOString().split('T')[0];
+            if (elValor) elValor.value = String(pg.valor);
+            if (elObs) elObs.value = pg.obs || '';
+            if (tipoEl) tipoEl.value = pg.tipo || (refEstaAtrasada(ano, mes, hoje) ? 'atrasado' : 'em_dia');
+            if (hidMes) hidMes.value = String(mes);
+            if (hidAno) hidAno.value = String(ano);
+            if (modeEl) modeEl.value = 'edit';
+            if (origMesEl) origMesEl.value = String(mes);
+            if (origAnoEl) origAnoEl.value = String(ano);
+            if (refGroup) refGroup.style.display = 'block';
+            if (refSel) {
+                refSel.innerHTML = '';
+                const mesesPeriodo = iterarMeses(currentPeriodo.mesIni, currentPeriodo.ano, currentPeriodo.mesFim, currentPeriodo.ano);
+                mesesPeriodo.forEach(ref => {
+                    const opt = document.createElement('option');
+                    opt.value = `${ref.ano}-${String(ref.mes + 1).padStart(2, '0')}`;
+                    opt.textContent = `${MESES[ref.mes]} / ${ref.ano}`;
+                    if (ref.ano === ano && ref.mes === mes) opt.selected = true;
+                    refSel.appendChild(opt);
+                });
+                refSel.onchange = updateMpgRef;
+            }
+            document.getElementById('modal-pg-overlay').classList.add('open');
+        }
+
         function updateMpgValor() {
             const tipo = document.getElementById('mpg-tipo').value;
             if (tipo === 'em_dia') {
@@ -3960,21 +4098,38 @@
             const mesAlvo = selMesEl && selMesEl.value !== '' ? parseInt(selMesEl.value, 10) : currentRef.mes;
             const anoAlvo = selAnoEl && selAnoEl.value !== '' ? parseInt(selAnoEl.value, 10) : currentRef.ano;
 
-            pagamentos.push({
-                idAssoc: currentAssocId,
-                mes: mesAlvo,
-                ano: anoAlvo,
-                valor,
-                data,
-                obs,
-                tipo,
-                origem: 'PIX BRADESCO'
-            });
+            const modeEl = document.getElementById('mpg-mode');
+            const isEdit = modeEl && modeEl.value === 'edit';
+            if (isEdit) {
+                const origMes = parseInt(document.getElementById('mpg-orig-mes').value, 10);
+                const origAno = parseInt(document.getElementById('mpg-orig-ano').value, 10);
+                const idxOrig = pagamentos.findIndex(p => p.idAssoc === currentAssocId && p.mes === origMes && p.ano === origAno);
+                if (idxOrig !== -1) {
+                    const idxTarget = pagamentos.findIndex(p => p.idAssoc === currentAssocId && p.mes === mesAlvo && p.ano === anoAlvo);
+                    if (idxTarget !== -1 && idxTarget !== idxOrig) {
+                        pagamentos[idxTarget] = { ...pagamentos[idxTarget], valor, data, obs, tipo };
+                        pagamentos.splice(idxOrig, 1);
+                    } else {
+                        pagamentos[idxOrig] = { ...pagamentos[idxOrig], mes: mesAlvo, ano: anoAlvo, valor, data, obs, tipo };
+                    }
+                }
+            } else {
+                pagamentos.push({
+                    idAssoc: currentAssocId,
+                    mes: mesAlvo,
+                    ano: anoAlvo,
+                    valor,
+                    data,
+                    obs,
+                    tipo,
+                    origem: 'PIX BRADESCO'
+                });
+            }
 
             salvarDados();
             atualizarInterface();
             closePgModal();
-            showToast("Pagamento registrado!");
+            showToast(isEdit ? "Pagamento atualizado!" : "Pagamento registrado!");
         }
 
         function estornarPagamento(idAssoc) {
