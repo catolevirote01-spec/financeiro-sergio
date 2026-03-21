@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1285,7 +1284,7 @@
                                         <span>Importar</span>
                                     </label>
                                 </th>
-                                <th>Associado Asaas</th>
+                                <th>Associado</th>
                                 <th>Referência</th>
                                 <th>Data Pgto</th>
                                 <th>Valor</th>
@@ -1570,21 +1569,48 @@
             <div class="subtab-page" id="subtab-importar">
                 <div class="dashboard-grid" style="grid-template-columns: 1fr;">
                     <div class="main-content">
-                        <div class="notice">
-                            <strong>📁 Importar Banco ASAS</strong>
-                            <p>Arraste o arquivo do Asaas ou clique na área abaixo para selecionar. O sistema faz a conciliação e mostra uma prévia antes de aplicar.</p>
+                        <div class="subtabs-nav" role="tablist" aria-label="Importação">
+                            <button class="subtab-btn active" id="import-btn-pix" onclick="trocarImportAba('pix')" type="button">💳 PIX Bradesco</button>
+                            <button class="subtab-btn" id="import-btn-asaas" onclick="trocarImportAba('asaas')" type="button">🏦 Asaas</button>
                         </div>
-                        <div class="import-panel" style="flex-direction: column; align-items: stretch; padding: 20px; max-width: 520px;">
-                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                                <div class="import-icon" style="font-size: 24px;">📁</div>
-                                <div class="import-text">
-                                    <h3 style="font-size: 14px;">Importar Banco ASAS</h3>
+
+                        <div class="subtab-page active" id="import-pix">
+                            <div class="notice">
+                                <strong>💳 Importar PIX Bradesco</strong>
+                                <p>Planilha com colunas: Nome do Associado, Mensalidade Referencia, Data de Pagamento, Valor Pago.</p>
+                            </div>
+                            <div class="import-panel" style="flex-direction: column; align-items: stretch; padding: 20px; max-width: 520px;">
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                    <div class="import-icon" style="font-size: 24px;">📁</div>
+                                    <div class="import-text">
+                                        <h3 style="font-size: 14px;">Importar Planilha PIX Bradesco</h3>
+                                    </div>
+                                </div>
+                                <div class="import-drop-area" id="drop-area-pix" style="padding: 24px 16px;">
+                                    <input type="file" id="file-input-pix" accept=".xlsx, .xls, .csv">
+                                    <div class="drop-icon" style="font-size: 24px;"> </div>
+                                    <div class="drop-label" style="font-size: 12px;">Arraste o arquivo aqui</div>
                                 </div>
                             </div>
-                            <div class="import-drop-area" id="drop-area" style="padding: 24px 16px;">
-                                <input type="file" id="file-input" accept=".xlsx, .xls, .csv">
-                                <div class="drop-icon" style="font-size: 24px;"> </div>
-                                <div class="drop-label" style="font-size: 12px;">Arraste o arquivo aqui</div>
+                        </div>
+
+                        <div class="subtab-page" id="import-asaas">
+                            <div class="notice">
+                                <strong>🏦 Importar Asaas</strong>
+                                <p>Relatório do Asaas contendo Nome do Sacado, Valor, Data de Pagamento e Vencimento.</p>
+                            </div>
+                            <div class="import-panel" style="flex-direction: column; align-items: stretch; padding: 20px; max-width: 520px;">
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                    <div class="import-icon" style="font-size: 24px;">📁</div>
+                                    <div class="import-text">
+                                        <h3 style="font-size: 14px;">Importar Relatório Asaas</h3>
+                                    </div>
+                                </div>
+                                <div class="import-drop-area" id="drop-area-asaas" style="padding: 24px 16px;">
+                                    <input type="file" id="file-input-asaas" accept=".xlsx, .xls, .csv">
+                                    <div class="drop-icon" style="font-size: 24px;"> </div>
+                                    <div class="drop-label" style="font-size: 12px;">Arraste o arquivo aqui</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4309,14 +4335,40 @@
         }
 
         // IMPORTAÇÃO
-        const dropArea = document.getElementById('drop-area');
-        const fileInput = document.getElementById('file-input');
+        function trocarImportAba(aba) {
+            const pages = [
+                document.getElementById('import-pix'),
+                document.getElementById('import-asaas')
+            ].filter(Boolean);
+            const btnPix = document.getElementById('import-btn-pix');
+            const btnAsaas = document.getElementById('import-btn-asaas');
+            pages.forEach(p => p.classList.remove('active'));
+            if (aba === 'asaas') {
+                document.getElementById('import-asaas')?.classList.add('active');
+                btnAsaas?.classList.add('active');
+                btnPix?.classList.remove('active');
+            } else {
+                document.getElementById('import-pix')?.classList.add('active');
+                btnPix?.classList.add('active');
+                btnAsaas?.classList.remove('active');
+            }
+        }
 
-        dropArea.onclick = () => fileInput.click();
+        const dropAreaPix = document.getElementById('drop-area-pix');
+        const fileInputPix = document.getElementById('file-input-pix');
+        const dropAreaAsaas = document.getElementById('drop-area-asaas');
+        const fileInputAsaas = document.getElementById('file-input-asaas');
 
-        fileInput.onchange = (e) => {
+        if (dropAreaPix && fileInputPix) dropAreaPix.onclick = () => fileInputPix.click();
+        if (dropAreaAsaas && fileInputAsaas) dropAreaAsaas.onclick = () => fileInputAsaas.click();
+
+        if (fileInputPix) fileInputPix.onchange = (e) => {
             const file = e.target.files[0];
-            if (file) processarArquivo(file);
+            if (file) processarArquivo(file, 'BRADESCO');
+        };
+        if (fileInputAsaas) fileInputAsaas.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) processarArquivo(file, 'ASAAS');
         };
 
         // ── Parseia string de data dd/mm/yyyy ou yyyy-mm-dd para yyyy-mm-dd ──
@@ -4335,7 +4387,7 @@
             return new Date().toISOString().split('T')[0];
         }
 
-        function processarArquivo(file) {
+        function processarArquivo(file, forceFonte) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
@@ -4380,10 +4432,34 @@
                     const valor   = parseFloat(String(valRaw).replace(/[^\d,.\-]/g, '').replace(',', '.'));
                     const dataPg  = pick(['Data de Pagamento', 'Data do Pagamento', 'Data', 'Pagamento']) ?? (row['Data de Pagamento'] || row['Data do Pagamento'] || row['Data'] || row['Pagamento']);
                     const vencRaw = pick(['Vencimento', 'Data de Vencimento', 'Vencimento (Data)']) ?? row['Vencimento'];
+                    const refCol  = pick(['Mensalidade Referencia','Mensalidade','Referência','Referencia']);
+                    let fonte = (forceFonte && (forceFonte === 'BRADESCO' || forceFonte === 'ASAAS'))
+                        ? forceFonte
+                        : (refCol !== undefined ? 'BRADESCO' : 'ASAAS');
 
                     // ── Extrair mês/ano de referência a partir de Vencimento ──
                     let mesRef = currentRef.mes;
                     let anoRef = currentRef.ano;
+                    if (refCol !== undefined && String(refCol).trim() !== '') {
+                        const s = String(refCol).trim();
+                        let m = null;
+                        let a = null;
+                        const mmYYYY = s.match(/(\d{1,2})[\/\-](\d{4})/);
+                        if (mmYYYY) {
+                            m = parseInt(mmYYYY[1], 10) - 1;
+                            a = parseInt(mmYYYY[2], 10);
+                        } else {
+                            const sn = s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,' ');
+                            const mesesN = ["JANEIRO","FEVEREIRO","MARCO","ABRIL","MAIO","JUNHO","JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
+                            const anoMatch = sn.match(/(\d{4})/);
+                            if (anoMatch) {
+                                for (let i = 0; i < mesesN.length; i++) {
+                                    if (sn.includes(mesesN[i])) { m = i; a = parseInt(anoMatch[1], 10); break; }
+                                }
+                            }
+                        }
+                        if (m !== null && a !== null && !isNaN(m) && !isNaN(a)) { mesRef = m; anoRef = a; }
+                    }
 
                     if (vencRaw !== undefined && vencRaw !== null && String(vencRaw).trim() !== '') {
                         const parseAnoMes = (v) => {
@@ -4456,7 +4532,8 @@
                         idAssoc      : assocMatch ? assocMatch.id : null,
                         resultado    : assocMatch ? 'ok' : 'err',
                         include      : !outOfRange,
-                        outOfRange   : outOfRange
+                        outOfRange   : outOfRange,
+                        fonte        : fonte
                     };
                 });
 
@@ -4676,9 +4753,9 @@
                                 ...pagamentos[idx],
                                 valor: item.valor,
                                 data: parsearDataAsaas(item.data),
-                                obs: 'Importado Asaas',
+                                obs: item.fonte === 'BRADESCO' ? 'Importado PIX Bradesco' : 'Importado Asaas',
                                 tipo: item.valor >= configuracoes.valorAtraso ? 'atrasado' : 'em_dia',
-                                origem: 'ASAAS'
+                                origem: item.fonte === 'BRADESCO' ? 'PIX BRADESCO' : 'ASAAS'
                             };
                         }
                         importedKeys.add(key);
@@ -4697,9 +4774,9 @@
                     ano     : anoAlvo,
                     valor   : item.valor,
                     data    : parsearDataAsaas(item.data),
-                    obs     : 'Importado Asaas',
+                    obs     : item.fonte === 'BRADESCO' ? 'Importado PIX Bradesco' : 'Importado Asaas',
                     tipo    : item.valor >= configuracoes.valorAtraso ? 'atrasado' : 'em_dia',
-                    origem  : 'ASAAS'
+                    origem  : item.fonte === 'BRADESCO' ? 'PIX BRADESCO' : 'ASAAS'
                 });
                 importedKeys.add(key);
                 const k = monthKey(anoAlvo, mesAlvo);
